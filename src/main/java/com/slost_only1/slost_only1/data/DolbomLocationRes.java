@@ -1,31 +1,26 @@
 package com.slost_only1.slost_only1.data;
 
+import com.slost_only1.slost_only1.model.Address;
 import com.slost_only1.slost_only1.model.DolbomLocation;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class DolbomLocationRes {
-    private String sido;
 
-    private String bname;
+    private Long id;
 
-    private String sigungu;
+    private MemberRes member;
 
-    private String address;
+    private Address address;
 
-    public DolbomLocationRes(String sido, String bname, String sigungu, String address) {
-        this.sido = sido;
-        this.bname = bname;
-        this.sigungu = sigungu;
-        this.address = address;
-    }
 
     public static DolbomLocationRes of(DolbomLocation dolbomLocation) {
         return new DolbomLocationRes(
-                dolbomLocation.getAddress().getSido(),
-                dolbomLocation.getAddress().getBname(),
-                dolbomLocation.getAddress().getSigungu(),
-                dolbomLocation.getAddress().getAddress()
+                dolbomLocation.getId(),
+                MemberRes.of(dolbomLocation.getMember()),
+                dolbomLocation.getAddress()
         );
     }
 

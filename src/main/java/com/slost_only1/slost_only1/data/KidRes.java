@@ -22,6 +22,9 @@ public class KidRes {
 
     private String remark;
 
+    private MemberRes member;
+
+
 
     public static KidRes of(Kid kid) {
         return new KidRes(
@@ -30,7 +33,8 @@ public class KidRes {
                 kid.getAge(),
                 kid.getGender(),
                 kid.getTendency(),
-                kid.getRemark()
+                kid.getRemark(),
+                MemberRes.of(kid.getMember())
         );
     }
 

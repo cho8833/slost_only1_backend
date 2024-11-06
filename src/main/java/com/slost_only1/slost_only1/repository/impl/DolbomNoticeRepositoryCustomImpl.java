@@ -1,9 +1,14 @@
 package com.slost_only1.slost_only1.repository.impl;
 
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.slost_only1.slost_only1.model.*;
 import com.slost_only1.slost_only1.repository.DolbomNoticeRepositoryCustom;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,22 +20,31 @@ public class DolbomNoticeRepositoryCustomImpl implements DolbomNoticeRepositoryC
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<DolbomNotice> findByAddress(String sido, String sigungu, String bname) {
+    public Page<DolbomNotice> findByAddress(Pageable pageable, String sido, String sigungu, String bname) {
 
         QDolbomNotice qDolbomNotice = QDolbomNotice.dolbomNotice;
         QDolbomLocation qDolbomLocation = QDolbomLocation.dolbomLocation;
         QMember qMember = QMember.member;
         QKid qKid = QKid.kid;
 
-        return queryFactory.select(qDolbomNotice)
+        List<DolbomNotice> fetch = queryFactory.select(qDolbomNotice)
                 .from(qDolbomNotice)
                 .innerJoin(qDolbomNotice.dolbomLocation, qDolbomLocation).fetchJoin()
                 .innerJoin(qDolbomNotice.member, qMember).fetchJoin()
                 .innerJoin(qDolbomNotice.kid, qKid).fetchJoin()
-                .where( sido != null ? qDolbomNotice.dolbomLocation.address.sido.eq(sido) : null)
-                .where( sigungu != null ? qDolbomNotice.dolbomLocation.address.sigungu.eq(sigungu) : null)
-                .where( bname != null ? qDolbomNotice.dolbomLocation.address.bname.eq(bname) : null)
+                .where(!StringUtils.isEmpty(sido) ? qDolbomNotice.dolbomLocation.address.sido.eq(sido) : null)
+                .where(!StringUtils.isEmpty(sigungu) ? qDolbomNotice.dolbomLocation.address.sigungu.eq(sigungu) : null)
+                .where(!StringUtils.isEmpty(bname) ? qDolbomNotice.dolbomLocation.address.bname.eq(bname) : null)
                 .fetch();
+
+        JPQLQuery<DolbomNotice> count = queryFactory
+                .select(qDolbomNotice)
+                .from(qDolbomNotice)
+                .where(!StringUtils.isEmpty(sido) ? qDolbomNotice.dolbomLocation.address.sido.eq(sido) : null)
+                .where(!StringUtils.isEmpty(sigungu) ? qDolbomNotice.dolbomLocation.address.sigungu.eq(sigungu) : null)
+                .where(!StringUtils.isEmpty(bname) ? qDolbomNotice.dolbomLocation.address.bname.eq(bname) : null);
+
+        return PageableExecutionUtils.getPage(fetch, pageable, count::fetchCount);
     }
 
 

@@ -1,10 +1,11 @@
 package com.slost_only1.slost_only1.service;
 
-import com.slost_only1.slost_only1.data.req.DolbomNoticeReq;
+import com.slost_only1.slost_only1.data.req.DolbomNoticeListReq;
 import com.slost_only1.slost_only1.model.DolbomNotice;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 public interface DolbomNoticeService {
-    List<DolbomNotice> findByAddress(DolbomNoticeReq req);
+    Page<DolbomNotice> findByAddress(Pageable pageRequest, DolbomNoticeListReq req);
 }

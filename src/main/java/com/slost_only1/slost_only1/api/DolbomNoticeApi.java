@@ -2,13 +2,15 @@ package com.slost_only1.slost_only1.api;
 
 import com.slost_only1.slost_only1.config.response.Response;
 import com.slost_only1.slost_only1.data.DolbomNoticeRes;
-import com.slost_only1.slost_only1.data.req.DolbomNoticeReq;
+import com.slost_only1.slost_only1.data.req.DolbomNoticeCreateReq;
+import com.slost_only1.slost_only1.data.req.DolbomNoticeListReq;
 import com.slost_only1.slost_only1.model.DolbomNotice;
 import com.slost_only1.slost_only1.service.DolbomNoticeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,11 +23,16 @@ public class DolbomNoticeApi {
 
 
     @GetMapping
-    public Response<List<DolbomNoticeRes>> getList(DolbomNoticeReq req) {
-        List<DolbomNotice> result = service.findByAddress(req);
+    public Response<Page<DolbomNoticeRes>> getList(Pageable pageable, DolbomNoticeListReq req) {
+        Page<DolbomNotice> result = service.findByAddress(pageable, req);
 
-        List<DolbomNoticeRes> response = result.stream().map(DolbomNoticeRes::of).toList();
-        
-        return new Response<>(response);
+        Page<DolbomNoticeRes> res = result.map(DolbomNoticeRes::of);
+
+        return new Response<>(res);
+    }
+
+    @PutMapping
+    public Response<DolbomNoticeRes> create(@RequestBody DolbomNoticeCreateReq req) {
+        return null;
     }
 }

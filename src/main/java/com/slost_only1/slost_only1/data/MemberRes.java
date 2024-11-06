@@ -10,13 +10,16 @@ public class MemberRes {
 
     private Long id;
 
+    private String phoneNumber;
 
-    public MemberRes(Long id) {
+
+    public MemberRes(Long id, String phoneNumber) {
         this.id = id;
+        this.phoneNumber = phoneNumber;
     }
 
     public static MemberRes of(Member member) {
-        return new MemberRes(member.getId());
+        return new MemberRes(member.getId(), member.getPhoneNumber());
     }
 
 }

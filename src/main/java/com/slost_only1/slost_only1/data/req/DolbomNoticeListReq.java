@@ -11,7 +11,7 @@ import org.apache.coyote.BadRequestException;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DolbomNoticeReq {
+public class DolbomNoticeListReq {
     private String sido;
 
     private String bname;
