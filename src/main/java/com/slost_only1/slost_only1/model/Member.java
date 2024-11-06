@@ -1,8 +1,7 @@
 package com.slost_only1.slost_only1.model;
 
 import com.slost_only1.slost_only1.base.BaseEntity;
-import com.slost_only1.slost_only1.data.SignUpReq;
-import com.slost_only1.slost_only1.auth.Role;
+import com.slost_only1.slost_only1.data.req.SignUpReq;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -22,10 +21,10 @@ public class Member extends BaseEntity {
     private String password;
 
     @Column
-    private Role role;
+    private String phoneNumber;
 
 
     public static Member of(SignUpReq req) {
-        return new Member(req.getUsername(), req.getPassword(), Role.USER);
+        return new Member(req.getUsername(), req.getPassword(), req.getPhoneNumber());
     }
 }

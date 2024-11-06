@@ -4,6 +4,8 @@ import com.slost_only1.slost_only1.auth.AuthorizationTokenProvider;
 import com.slost_only1.slost_only1.config.exception.CustomException;
 import com.slost_only1.slost_only1.config.response.ResponseCode;
 import com.slost_only1.slost_only1.data.*;
+import com.slost_only1.slost_only1.data.req.SignInReq;
+import com.slost_only1.slost_only1.data.req.SignUpReq;
 import com.slost_only1.slost_only1.model.Member;
 import com.slost_only1.slost_only1.repository.MemberRepository;
 import com.slost_only1.slost_only1.service.AuthService;

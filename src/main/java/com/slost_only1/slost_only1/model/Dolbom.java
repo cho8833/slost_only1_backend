@@ -8,7 +8,8 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.joda.time.DateTime;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -16,10 +17,10 @@ import org.joda.time.DateTime;
 @NoArgsConstructor
 public class Dolbom extends BaseEntity {
     @Column
-    private DateTime startDateTime;
+    private LocalDateTime startDateTime;
 
     @Column
-    private DateTime endDateTime;
+    private LocalDateTime endDateTime;
 
     @Column
     private Integer pay;

@@ -48,7 +48,6 @@ public class AuthorizationTokenProvider {
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
                 .setSubject(String.valueOf(authentication.getId()))                     // payload "sub": "{id}"
-                .claim(AUTHORITIES_KEY, authentication.getRole().getValue())            // payload "auth": "ROLE_USER"
                 .setExpiration(accessTokenExpiresIn)                                    // payload "exp": 1516239022
                 .signWith(key, SignatureAlgorithm.HS512)                                // header "alg": "HS512"
                 .compact();

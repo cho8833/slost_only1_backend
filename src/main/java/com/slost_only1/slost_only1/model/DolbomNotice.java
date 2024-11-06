@@ -3,6 +3,7 @@ package com.slost_only1.slost_only1.model;
 import com.slost_only1.slost_only1.base.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,11 +22,18 @@ public class DolbomNotice extends BaseEntity {
     @Column
     private LocalDateTime endDateTime;
 
-    @ManyToOne
+    @Column
+    private Long pay;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private DolbomLocation dolbomLocation;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Kid kid;
+
 
 
 }

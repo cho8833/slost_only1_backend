@@ -18,4 +18,6 @@ public class Address {
     private String bname;
 
     private String address;
+
+    private String details;
 }

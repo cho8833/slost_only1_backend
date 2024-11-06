@@ -49,6 +49,11 @@ public class SecurityConfig {
                             .requestMatchers("/auth/signIn").permitAll()
                             .requestMatchers("/auth/signUp").permitAll()
                             .requestMatchers("/member/**").hasRole("ADMIN")
+
+                            // test
+                            .requestMatchers("/dolbom-notice").permitAll()
+
+
                             .anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -67,8 +72,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // local front end
-        configuration.addAllowedOrigin("http://localhost:8088");
+        configuration.addAllowedOrigin("http://localhost:8088"); // local front end
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);

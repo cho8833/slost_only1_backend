@@ -23,6 +23,9 @@ public class Kid extends BaseEntity {
     private Gender gender;
 
     @Column
-    private String other;
+    private String tendency;
+
+    @Column
+    private String remark;
 
 }

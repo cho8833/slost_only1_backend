@@ -1,4 +1,5 @@
-package com.slost_only1.slost_only1.data;
+package com.slost_only1.slost_only1.data.req;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +10,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignUpReq {
-
+public class SignInReq {
     private String username;
 
     private String password;
+
 }

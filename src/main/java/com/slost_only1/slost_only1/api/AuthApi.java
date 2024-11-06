@@ -2,6 +2,8 @@ package com.slost_only1.slost_only1.api;
 
 import com.slost_only1.slost_only1.config.response.Response;
 import com.slost_only1.slost_only1.data.*;
+import com.slost_only1.slost_only1.data.req.SignInReq;
+import com.slost_only1.slost_only1.data.req.SignUpReq;
 import com.slost_only1.slost_only1.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
