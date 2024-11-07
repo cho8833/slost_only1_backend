@@ -46,9 +46,8 @@ public class SecurityConfig {
                     authorize
                             .requestMatchers("/health").permitAll()
                             .requestMatchers("/event").permitAll()
-                            .requestMatchers("/auth/signIn").permitAll()
+                            .requestMatchers("/auth/sign-in/**").permitAll()
                             .requestMatchers("/auth/signUp").permitAll()
-                            .requestMatchers("/member/**").hasRole("ADMIN")
 
                             // test
                             .requestMatchers("/dolbom-notice").permitAll()

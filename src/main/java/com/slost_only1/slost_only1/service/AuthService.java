@@ -8,6 +8,8 @@ public interface AuthService {
 
     AuthorizationTokenData signIn(SignInReq req);
 
+    AuthorizationTokenData testSignIn();
+
     AuthorizationTokenData signUp(SignUpReq req);
 
     AuthorizationTokenData reissue(TokenReq req);

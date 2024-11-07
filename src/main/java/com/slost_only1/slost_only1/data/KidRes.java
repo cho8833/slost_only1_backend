@@ -6,6 +6,8 @@ import com.slost_only1.slost_only1.model.Kid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @Getter
 public class KidRes {
@@ -14,7 +16,7 @@ public class KidRes {
 
     private String name;
 
-    private Integer age;
+    private LocalDateTime birthday;
 
     private Gender gender;
 
@@ -22,19 +24,14 @@ public class KidRes {
 
     private String remark;
 
-    private MemberRes member;
-
-
-
     public static KidRes of(Kid kid) {
         return new KidRes(
                 kid.getId(),
                 kid.getName(),
-                kid.getAge(),
+                kid.getBirthday(),
                 kid.getGender(),
                 kid.getTendency(),
-                kid.getRemark(),
-                MemberRes.of(kid.getMember())
+                kid.getRemark()
         );
     }
 

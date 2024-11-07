@@ -35,6 +35,15 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public AuthorizationTokenData testSignIn() {
+        Member member = memberRepository.findById(1L).orElseThrow();
+        AuthorizationTokenData tokenData = tokenProvider.generateAuthorizationTokenData(member);
+
+        return tokenData;
+
+    }
+
+    @Override
     public AuthorizationTokenData signUp(SignUpReq req) {
         List<Member> check = memberRepository.findByUsername(req.getUsername());
 

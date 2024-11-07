@@ -41,7 +41,7 @@ public class CreateDummy {
         );
         Kid kid1 = new Kid(
                 member1,
-                "홍길동", 9, Gender.MALE, "귀여움", "행동이 서툼"
+                "홍길동", now.minusYears(5), Gender.MALE, "귀여움", "행동이 서툼"
         );
         DolbomLocation dolbomLocation1 = new DolbomLocation(
                 new Address("경상남도", "창원시", "장천동", "경상남도 창원시 행암로 25", "117동 405호"),
@@ -60,6 +60,10 @@ public class CreateDummy {
 
     @Test
     public void createDummyData2() {
+//        dolbomNoticeRepository.deleteAll();
+//        dolbomLocationRepository.deleteAll();
+//        kidRepository.deleteAll();
+//        memberRepository.deleteAll();
         LocalDateTime now = LocalDateTime.now();
 
         List<Member> members = new ArrayList<>();
@@ -73,11 +77,11 @@ public class CreateDummy {
         memberRepository.saveAll(members);
 
         List<Kid> kids = new ArrayList<>();
-        kids.add(new Kid(members.get(0), "홍길동", 9, Gender.MALE, "귀여움", "행동이 서툼"));
-        kids.add(new Kid(members.get(1), "김철수", 8, Gender.MALE, "말이 많음", "장난이 심함"));
-        kids.add(new Kid(members.get(2), "이영희", 10, Gender.FEMALE, "웃음이 많음", "수줍음"));
-        kids.add(new Kid(members.get(3), "박민수", 7, Gender.MALE, "활발함", "집중력 부족"));
-        kids.add(new Kid(members.get(4), "최수지", 8, Gender.FEMALE, "상냥함", "순발력 부족"));
+        kids.add(new Kid(members.get(0), "홍길동", now.minusYears(4), Gender.MALE, "귀여움", "행동이 서툼"));
+        kids.add(new Kid(members.get(1), "김철수", now.minusYears(5), Gender.MALE, "말이 많음", "장난이 심함"));
+        kids.add(new Kid(members.get(2), "이영희", now.minusYears(6), Gender.FEMALE, "웃음이 많음", "수줍음"));
+        kids.add(new Kid(members.get(3), "박민수", now.minusYears(7), Gender.MALE, "활발함", "집중력 부족"));
+        kids.add(new Kid(members.get(4), "최수지", now.minusYears(8), Gender.FEMALE, "상냥함", "순발력 부족"));
         kidRepository.saveAll(kids);
 
         List<DolbomLocation> dolbomLocations = new ArrayList<>();

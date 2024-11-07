@@ -15,9 +15,10 @@ public class AuthApi {
 
     private final AuthService authService;
 
-    @PostMapping("/signIn")
+    @PostMapping("/sign-in/idpw")
     public Response<AuthorizationTokenData> signIn(@RequestBody SignInReq req) {
-        return new Response<>(authService.signIn(req));
+//        return new Response<>(authService.signIn(req));
+        return new Response<>(authService.testSignIn());
     }
 
     @PostMapping("/signUp")

@@ -70,20 +70,20 @@ public class AuthorizationTokenProvider {
         // 토큰 복호화
         Claims claims = parseClaims(accessToken);
 
-        if (claims.get(AUTHORITIES_KEY) == null) {
-            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
-        }
+//        if (claims.get(AUTHORITIES_KEY) == null) {
+//            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+//        }
 
-        // 클레임에서 권한 정보 가져오기
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+//        // 클레임에서 권한 정보 가져오기
+//        Collection<? extends GrantedAuthority> authorities =
+//                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+//                        .map(SimpleGrantedAuthority::new)
+//                        .collect(Collectors.toList());
 
         // UserDetails 객체를 만들어서 Authentication 리턴
         Long memberId = Long.valueOf(claims.getSubject());
 
-        return new UsernamePasswordAuthenticationToken(memberId, null, authorities);
+        return new UsernamePasswordAuthenticationToken(memberId, null, null);
     }
 
     public Long getSubject(String accessToken) {
