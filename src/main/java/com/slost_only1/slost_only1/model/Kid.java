@@ -12,6 +12,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
 
@@ -20,6 +23,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
+@SQLDelete(sql = "UPDATE kid SET deleted = true WHERE id = ?")
+@SQLRestriction("deleted <> TRUE")
 public class Kid extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

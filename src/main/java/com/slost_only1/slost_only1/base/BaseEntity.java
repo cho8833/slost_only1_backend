@@ -36,4 +36,7 @@ public class BaseEntity {
     @Column(updatable = false)
     @LastModifiedBy
     private String lastModifiedBy;
+
+    @Column
+    private Boolean deleted = false;
 }

@@ -8,6 +8,8 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +17,8 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE dolbom_notice SET deleted = true WHERE id = ?")
+@SQLRestriction("deleted <> TRUE")
 public class DolbomNotice extends BaseEntity {
     @Column
     private LocalDateTime startDateTime;

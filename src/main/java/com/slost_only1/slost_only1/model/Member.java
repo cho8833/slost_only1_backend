@@ -7,11 +7,15 @@ import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id = ?")
+@SQLRestriction("deleted <> TRUE")
 public class Member extends BaseEntity {
 
     @Column

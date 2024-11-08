@@ -11,15 +11,12 @@ public class DolbomLocationRes {
 
     private Long id;
 
-    private MemberRes member;
-
     private Address address;
 
 
     public static DolbomLocationRes of(DolbomLocation dolbomLocation) {
         return new DolbomLocationRes(
                 dolbomLocation.getId(),
-                MemberRes.of(dolbomLocation.getMember()),
                 dolbomLocation.getAddress()
         );
     }
