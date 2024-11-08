@@ -13,11 +13,14 @@ public class DolbomLocationRes {
 
     private Address address;
 
+    private String name;
+
 
     public static DolbomLocationRes of(DolbomLocation dolbomLocation) {
         return new DolbomLocationRes(
                 dolbomLocation.getId(),
-                dolbomLocation.getAddress()
+                dolbomLocation.getAddress(),
+                dolbomLocation.getName()
         );
     }
 

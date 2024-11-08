@@ -48,11 +48,6 @@ public class SecurityConfig {
                             .requestMatchers("/event").permitAll()
                             .requestMatchers("/auth/sign-in/**").permitAll()
                             .requestMatchers("/auth/signUp").permitAll()
-
-                            // test
-                            .requestMatchers("/dolbom-notice").permitAll()
-
-
                             .anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

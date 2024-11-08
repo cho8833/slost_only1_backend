@@ -1,10 +1,8 @@
 package com.slost_only1.slost_only1.model;
 
 import com.slost_only1.slost_only1.base.BaseEntity;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
+import com.slost_only1.slost_only1.data.req.DolbomLocationCreateReq;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,4 +23,13 @@ public class DolbomLocation extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
+    @Column
+    private String name;
+
+
+    public static DolbomLocation from(DolbomLocationCreateReq req, Member member) {
+        return new DolbomLocation(
+                req.getAddress(), member, req.getName()
+        );
+    }
 }
