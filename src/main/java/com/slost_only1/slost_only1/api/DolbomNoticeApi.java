@@ -24,9 +24,7 @@ public class DolbomNoticeApi {
 
     @GetMapping
     public Response<Page<DolbomNoticeRes>> getList(Pageable pageable, DolbomNoticeListReq req) {
-        Page<DolbomNotice> result = service.findByAddress(pageable, req);
-
-        Page<DolbomNoticeRes> res = result.map(DolbomNoticeRes::of);
+        Page<DolbomNoticeRes> res = service.findByAddress(pageable, req);;
 
         return new Response<>(res);
     }

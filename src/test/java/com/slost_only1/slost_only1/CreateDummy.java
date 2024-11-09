@@ -45,17 +45,11 @@ public class CreateDummy {
         );
         DolbomLocation dolbomLocation1 = new DolbomLocation(
                 new Address("경상남도", "창원시", "장천동", "경상남도 창원시 행암로 25", "117동 405호"),
-                member1
+                member1, "우리집"
         );
-
-        DolbomNotice dolbomNotice1 = new DolbomNotice(
-                now, now.plusMonths(1), 100000L, member1, dolbomLocation1, kid1
-        );
-
         memberRepository.save(member1);
         kidRepository.save(kid1);
         dolbomLocationRepository.save(dolbomLocation1);
-        dolbomNoticeRepository.save(dolbomNotice1);
     }
 
     @Test
@@ -85,24 +79,25 @@ public class CreateDummy {
         kidRepository.saveAll(kids);
 
         List<DolbomLocation> dolbomLocations = new ArrayList<>();
-        dolbomLocations.add(new DolbomLocation(new Address("경상남도", "창원시", "장천동", "경상남도 창원시 행암로 25", "117동 405호"), members.get(0)));
-        dolbomLocations.add(new DolbomLocation(new Address("서울특별시", "강남구", "삼성동", "서울 강남구 테헤란로 45", "101동 205호"), members.get(1)));
-        dolbomLocations.add(new DolbomLocation(new Address("부산광역시", "해운대구", "우동", "부산 해운대구 우동로 76", "3동 502호"), members.get(2)));
-        dolbomLocations.add(new DolbomLocation(new Address("대구광역시", "수성구", "지산동", "대구 수성구 지산로 39", "202동 1101호"), members.get(3)));
-        dolbomLocations.add(new DolbomLocation(new Address("광주광역시", "서구", "상무동", "광주 서구 상무대로 18", "5동 307호"), members.get(4)));
+        dolbomLocations.add(new DolbomLocation(
+                new Address("경상남도", "창원시", "장천동", "경상남도 창원시 행암로 25", "117동 405호"), members.get(0), "집1"));
+        dolbomLocations.add(new DolbomLocation(new Address("서울특별시", "강남구", "삼성동", "서울 강남구 테헤란로 45", "101동 205호"), members.get(1), "집2"));
+        dolbomLocations.add(new DolbomLocation(new Address("부산광역시", "해운대구", "우동", "부산 해운대구 우동로 76", "3동 502호"), members.get(2), "집3"));
+        dolbomLocations.add(new DolbomLocation(new Address("대구광역시", "수성구", "지산동", "대구 수성구 지산로 39", "202동 1101호"), members.get(3), "집4"));
+        dolbomLocations.add(new DolbomLocation(new Address("광주광역시", "서구", "상무동", "광주 서구 상무대로 18", "5동 307호"), members.get(4), "집5"));
         dolbomLocationRepository.saveAll(dolbomLocations);
 
-        List<DolbomNotice> dolbomNotices = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            dolbomNotices.add(new DolbomNotice(
-                    now,
-                    now.plusMonths(1),
-                    100000L + (i * 5000),
-                    members.get(i),
-                    dolbomLocations.get(i),
-                    kids.get(i)
-            ));
-        }
-        dolbomNoticeRepository.saveAll(dolbomNotices);
+//        List<DolbomNotice> dolbomNotices = new ArrayList<>();
+//        for (int i = 0; i < 5; i++) {
+//            dolbomNotices.add(new DolbomNotice(
+//                    now,
+//                    now.plusMonths(1),
+//                    100000L + (i * 5000),
+//                    members.get(i),
+//                    dolbomLocations.get(i),
+//                    kids.get(i)
+//            ));
+//        }
+//        dolbomNoticeRepository.saveAll(dolbomNotices);
     }
 }

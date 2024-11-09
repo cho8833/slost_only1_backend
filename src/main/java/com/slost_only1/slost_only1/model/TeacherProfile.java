@@ -1,7 +1,8 @@
 package com.slost_only1.slost_only1.model;
 
+
 import com.slost_only1.slost_only1.base.BaseEntity;
-import com.slost_only1.slost_only1.enums.DolbomCategory;
+import com.slost_only1.slost_only1.enums.Gender;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,32 +13,27 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE dolbom_notice SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE teacher_profile SET deleted = true WHERE id = ?")
 @SQLRestriction("deleted <> TRUE")
-public class DolbomNotice extends BaseEntity {
-    @Column
-    private LocalDateTime startDateTime;
+public class TeacherProfile extends BaseEntity {
 
     @Column
-    private LocalDateTime endDateTime;
+    private String name;
 
     @Column
-    private Long pay;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private DolbomLocation dolbomLocation;
+    private Gender gender;
 
     @Column
-    private DolbomCategory category;
+    private Long age;
 
+    @Column
+    private String profileName;
+
+    @Column
+    private String profileImageUrl;
 
 }

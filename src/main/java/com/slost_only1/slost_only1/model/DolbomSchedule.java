@@ -1,7 +1,7 @@
 package com.slost_only1.slost_only1.model;
 
 import com.slost_only1.slost_only1.base.BaseEntity;
-import com.slost_only1.slost_only1.enums.DolbomCategory;
+import com.slost_only1.slost_only1.enums.ScheduleRepeatType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,32 +12,32 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDateTime;
+import java.sql.Time;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE dolbom_notice SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE dolbom_schedule SET deleted = true WHERE id = ?")
 @SQLRestriction("deleted <> TRUE")
-public class DolbomNotice extends BaseEntity {
-    @Column
-    private LocalDateTime startDateTime;
-
-    @Column
-    private LocalDateTime endDateTime;
-
-    @Column
-    private Long pay;
+public class DolbomSchedule extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private DolbomLocation dolbomLocation;
+    private Dolbom dolbom;
 
     @Column
-    private DolbomCategory category;
+    private ScheduleRepeatType repeatType;
 
+    @Column
+    private Time startTime;
 
+    @Column
+    private Long dolbomHour;
+
+    @Column
+    private LocalDate startDate;
+
+    @Column
+    private LocalDate endDate;
 }
