@@ -19,7 +19,7 @@ import java.time.DayOfWeek;
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE dolbom_dow SET deleted = true WHERE id = ?")
 @SQLRestriction("deleted <> TRUE")
-public class DolbomDOW extends BaseEntity {
+public class DolbomDow extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Dolbom dolbom;

@@ -1,6 +1,7 @@
 package com.slost_only1.slost_only1.model;
 
 import com.slost_only1.slost_only1.base.BaseEntity;
+import com.slost_only1.slost_only1.data.req.DolbomPostReq;
 import com.slost_only1.slost_only1.enums.DolbomTimeSlotStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,6 +34,7 @@ public class DolbomTimeSlot extends BaseEntity {
     @Column
     private DolbomTimeSlotStatus status;
 
-    @Column
-    private Boolean isModified;
+    public static DolbomTimeSlot from(DolbomPostReq.DolbomTimeSlotCreateReq req, Dolbom dolbom) {
+        return new DolbomTimeSlot(dolbom, req.getStartDateTime(), req.getEndDateTime(), DolbomTimeSlotStatus.RESERVED);
+    }
 }
