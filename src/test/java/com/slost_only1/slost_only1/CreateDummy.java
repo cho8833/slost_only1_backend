@@ -3,7 +3,6 @@ package com.slost_only1.slost_only1;
 import com.slost_only1.slost_only1.enums.Gender;
 import com.slost_only1.slost_only1.model.*;
 import com.slost_only1.slost_only1.repository.DolbomLocationRepository;
-import com.slost_only1.slost_only1.repository.DolbomNoticeRepository;
 import com.slost_only1.slost_only1.repository.KidRepository;
 import com.slost_only1.slost_only1.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -22,9 +21,6 @@ public class CreateDummy {
 
     @Autowired
     private KidRepository kidRepository;
-
-    @Autowired
-    private DolbomNoticeRepository dolbomNoticeRepository;
 
     @Autowired
     private MemberRepository memberRepository;

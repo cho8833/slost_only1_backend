@@ -2,6 +2,7 @@ package com.slost_only1.slost_only1.model;
 
 import com.slost_only1.slost_only1.base.BaseEntity;
 import com.slost_only1.slost_only1.enums.DolbomCategory;
+import com.slost_only1.slost_only1.enums.DolbomStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,10 +22,28 @@ import java.time.LocalDateTime;
 @SQLRestriction("deleted <> TRUE")
 public class Dolbom extends BaseEntity {
     @Column
-    private LocalDateTime startDateTime;
+    private LocalDate startDate;
 
     @Column
-    private LocalDateTime endDateTime;
+    private LocalDate endDate;
+
+    @Column
+    private Time startTime;
+
+    @Column
+    private Time endTime;
+
+    @Column
+    private Boolean weeklyRepeat;
+
+    @Column
+    private DolbomStatus status;
+
+    @Column
+    private String name;
+
+    @Column
+    private DolbomCategory category;
 
     @Column
     private Integer pay;
@@ -32,11 +53,5 @@ public class Dolbom extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private DolbomNotice dolbomNotice;
-
-    @Column
-    private DolbomCategory category;
 
 }
