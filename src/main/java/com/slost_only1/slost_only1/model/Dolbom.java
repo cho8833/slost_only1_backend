@@ -60,4 +60,7 @@ public class Dolbom extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TeacherProfile teacherProfile;
 }

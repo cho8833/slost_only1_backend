@@ -1,5 +1,8 @@
 package com.slost_only1.slost_only1.service.impl;
 
+import com.slost_only1.slost_only1.data.DolbomRes;
+import com.slost_only1.slost_only1.data.req.AddressListReq;
+import com.slost_only1.slost_only1.data.req.DolbomListReq;
 import com.slost_only1.slost_only1.data.req.DolbomPostReq;
 import com.slost_only1.slost_only1.enums.DolbomStatus;
 import com.slost_only1.slost_only1.model.*;
@@ -12,10 +15,12 @@ import com.slost_only1.slost_only1.util.AuthUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.sql.Time;
-import java.time.ZoneOffset;
 import java.util.List;
 
 @Service
@@ -68,5 +73,17 @@ public class DolbomServiceImpl implements DolbomService {
             List<DolbomDow> dows = req.getDows().stream().map(dow -> new DolbomDow(dolbom, dow)).toList();
             dolbomDowRepository.saveAll(dows);
         }
+    }
+
+    @Override
+    public Page<DolbomRes> getMyDolbom(AddressListReq addressListReq, DolbomStatus status, Pageable pageable) {
+        Long memberId = authUtil.getLoginMemberId();
+
+        return dolbomRepository.findByMemberIdAndAddressAndStatus(
+                memberId,
+                addressListReq,
+                status,
+                pageable
+        );
     }
 }
