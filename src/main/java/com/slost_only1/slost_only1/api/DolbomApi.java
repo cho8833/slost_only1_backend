@@ -3,12 +3,9 @@ package com.slost_only1.slost_only1.api;
 import com.slost_only1.slost_only1.config.response.Response;
 import com.slost_only1.slost_only1.data.DolbomRes;
 import com.slost_only1.slost_only1.data.req.AddressListReq;
-import com.slost_only1.slost_only1.data.req.DolbomListReq;
 import com.slost_only1.slost_only1.data.req.DolbomPostReq;
 import com.slost_only1.slost_only1.enums.DolbomStatus;
-import com.slost_only1.slost_only1.model.Dolbom;
 import com.slost_only1.slost_only1.service.DolbomService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +27,7 @@ public class DolbomApi {
         return Response.SUCCESS;
     }
 
-    @GetMapping
+    @GetMapping("/me")
     public Response<Page<DolbomRes>> getMyDolbom(@ModelAttribute AddressListReq addressListReq,
                                                  @RequestParam(required = false) DolbomStatus status,
                                                  @PageableDefault Pageable pageReq) {

@@ -2,7 +2,6 @@ package com.slost_only1.slost_only1.service.impl;
 
 import com.slost_only1.slost_only1.data.DolbomRes;
 import com.slost_only1.slost_only1.data.req.AddressListReq;
-import com.slost_only1.slost_only1.data.req.DolbomListReq;
 import com.slost_only1.slost_only1.data.req.DolbomPostReq;
 import com.slost_only1.slost_only1.enums.DolbomStatus;
 import com.slost_only1.slost_only1.model.*;
@@ -18,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.sql.Time;
 import java.util.List;

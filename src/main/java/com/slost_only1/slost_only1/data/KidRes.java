@@ -5,12 +5,14 @@ import com.querydsl.core.annotations.QueryProjection;
 import com.slost_only1.slost_only1.enums.Gender;
 import com.slost_only1.slost_only1.model.Kid;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 
 @Getter
+@EqualsAndHashCode
 public class KidRes {
 
     private Long id;

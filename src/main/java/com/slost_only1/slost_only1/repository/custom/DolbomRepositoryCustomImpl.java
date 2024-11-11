@@ -1,6 +1,7 @@
 package com.slost_only1.slost_only1.repository.custom;
 
 import com.querydsl.core.ResultTransformer;
+import com.querydsl.core.group.Group;
 import com.querydsl.core.group.GroupBy;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -41,8 +42,8 @@ public class DolbomRepositoryCustomImpl implements DolbomRepositoryCustom {
                 .innerJoin(qKidDolbom).on(qKidDolbom.dolbom.id.eq(qDolbom.id))
                 .innerJoin(qKidDolbom.kid, qKid)
                 .leftJoin(qDolbom.teacherProfile, qTeacherProfile)
-                .leftJoin(qDolbomReview).on(qDolbomReview.dolbom.id.eq(qDolbom.id))
                 .leftJoin(qDolbomDow).on(qDolbomDow.dolbom.id.eq(qDolbom.id))
+                .leftJoin(qDolbomReview).on(qDolbomReview.dolbom.id.eq(qDolbom.id))
                 .where(
                         BooleanExpressionUtil.eq(qDolbom.member.id, memberId),
                         BooleanExpressionUtil.eq(qDolbom.dolbomLocation.address.sido, addressListReq.getSido()),
@@ -52,6 +53,7 @@ public class DolbomRepositoryCustomImpl implements DolbomRepositoryCustom {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+
                 .transform(dolbomResProjection());
 
         JPAQuery<Dolbom> count = queryFactory.selectFrom(qDolbom)
@@ -69,8 +71,9 @@ public class DolbomRepositoryCustomImpl implements DolbomRepositoryCustom {
     ResultTransformer<List<DolbomRes>> dolbomResProjection() {
         return GroupBy.groupBy(qDolbom.id).list(
                 new QDolbomRes(qDolbom.id,
-                        GroupBy.list(new QKidRes(qKid.id, qKid.name, qKid.birthday, qKid.gender, qKid.tendency, qKid.remark)),
-                        GroupBy.list(new QDolbomTimeSlotRes(qDolbomTimeSlot.id, qDolbomTimeSlot.startDateTime, qDolbomTimeSlot.endDateTime, qDolbomTimeSlot.status)),
+                        GroupBy.set(new QKidRes(qKid.id, qKid.name, qKid.birthday, qKid.gender, qKid.tendency, qKid.remark)),
+                        GroupBy.set(new QDolbomTimeSlotRes(qDolbomTimeSlot.id, qDolbomTimeSlot.startDateTime, qDolbomTimeSlot.endDateTime, qDolbomTimeSlot.status)),
+                        GroupBy.set(qDolbomDow.dayOfWeek),
                         new QTeacherProfileRes(qTeacherProfile.id, qTeacherProfile.name, qTeacherProfile.gender, qTeacherProfile.profileImageUrl, qTeacherProfile.age, qTeacherProfile.profileName).skipNulls(),
                         new QDolbomLocationRes(qDolbomLocation.id, qDolbomLocation.address, qDolbomLocation.name),
                         qDolbom.startTime,
