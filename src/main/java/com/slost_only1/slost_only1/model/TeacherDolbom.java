@@ -1,8 +1,7 @@
 package com.slost_only1.slost_only1.model;
 
+
 import com.slost_only1.slost_only1.base.BaseEntity;
-import com.slost_only1.slost_only1.data.req.CertificateCreateReq;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
@@ -16,17 +15,12 @@ import org.hibernate.annotations.SQLRestriction;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE certificate SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE teacher_dolbom SET deleted = true WHERE id = ?")
 @SQLRestriction("deleted <> TRUE")
-public class Certificate extends BaseEntity {
-    @Column
-    private String title;
+public class TeacherDolbom extends BaseEntity {
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Dolbom dolbom;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
-
-    public static Certificate of(CertificateCreateReq req, Member member) {
-        return new Certificate(req.getTitle(), member);
-    }
-
+    private TeacherProfile teacherProfile;
 }

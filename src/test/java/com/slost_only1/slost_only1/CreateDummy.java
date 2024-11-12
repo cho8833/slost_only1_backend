@@ -1,10 +1,9 @@
 package com.slost_only1.slost_only1;
 
 import com.slost_only1.slost_only1.enums.Gender;
+import com.slost_only1.slost_only1.enums.MemberType;
 import com.slost_only1.slost_only1.model.*;
-import com.slost_only1.slost_only1.repository.DolbomLocationRepository;
-import com.slost_only1.slost_only1.repository.KidRepository;
-import com.slost_only1.slost_only1.repository.MemberRepository;
+import com.slost_only1.slost_only1.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +24,17 @@ public class CreateDummy {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private DolbomRepository dolbomRepository;
+
+    @Autowired
+    private TeacherProfileRepository teacherProfileRepository;
+
+    @Autowired
+    private TeacherDolbomRepository teacherDolbomRepository;
+
+
+
 
     @Test
     public void createDummyData1() {
@@ -33,7 +43,8 @@ public class CreateDummy {
         Member member1 = new Member(
                 "username1",
                 "password",
-                "01012345678"
+                "01012345678",
+                MemberType.PARENT
         );
         Kid kid1 = new Kid(
                 member1,
@@ -49,6 +60,13 @@ public class CreateDummy {
     }
 
     @Test
+    public void createTeacher() {
+        Dolbom dolbom = dolbomRepository.findById(3L).orElseThrow();
+
+
+    }
+
+    @Test
     public void createDummyData2() {
 //        dolbomNoticeRepository.deleteAll();
 //        dolbomLocationRepository.deleteAll();
@@ -61,7 +79,8 @@ public class CreateDummy {
             members.add(new Member(
                     "username" + i,
                     "password" + i,
-                    "0101234567" + i
+                    "0101234567" + i,
+                    MemberType.PARENT
             ));
         }
         memberRepository.saveAll(members);

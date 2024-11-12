@@ -74,7 +74,7 @@ public class DolbomRepositoryCustomImpl implements DolbomRepositoryCustom {
                         GroupBy.set(new QKidRes(qKid.id, qKid.name, qKid.birthday, qKid.gender, qKid.tendency, qKid.remark)),
                         GroupBy.set(new QDolbomTimeSlotRes(qDolbomTimeSlot.id, qDolbomTimeSlot.startDateTime, qDolbomTimeSlot.endDateTime, qDolbomTimeSlot.status)),
                         GroupBy.set(qDolbomDow.dayOfWeek),
-                        new QTeacherProfileRes(qTeacherProfile.id, qTeacherProfile.name, qTeacherProfile.gender, qTeacherProfile.profileImageUrl, qTeacherProfile.age, qTeacherProfile.profileName).skipNulls(),
+                        new QTeacherProfileRes(qTeacherProfile.id, qTeacherProfile.name, qTeacherProfile.gender, qTeacherProfile.profileImageUrl, qTeacherProfile.birthday, qTeacherProfile.profileName).skipNulls(),
                         new QDolbomLocationRes(qDolbomLocation.id, qDolbomLocation.address, qDolbomLocation.name),
                         qDolbom.startTime,
                         qDolbom.endTime,
@@ -83,7 +83,8 @@ public class DolbomRepositoryCustomImpl implements DolbomRepositoryCustom {
                         qDolbom.weeklyRepeat,
                         qDolbom.setSeveralTime,
                         qDolbom.repeatStartDate,
-                        qDolbom.repeatEndDate
+                        qDolbom.repeatEndDate,
+                        qDolbom.pay
                 )
         );
     }

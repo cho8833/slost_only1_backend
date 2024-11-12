@@ -3,6 +3,7 @@ package com.slost_only1.slost_only1.model;
 
 import com.slost_only1.slost_only1.base.BaseEntity;
 import com.slost_only1.slost_only1.enums.Gender;
+import com.slost_only1.slost_only1.enums.TeacherProfileStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +13,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -28,12 +31,18 @@ public class TeacherProfile extends BaseEntity {
     private Gender gender;
 
     @Column
-    private Long age;
+    private LocalDate birthday;
 
     @Column
     private String profileName;
 
     @Column
     private String profileImageUrl;
+
+    @Column
+    private TeacherProfileStatus status;
+
+    @ManyToOne
+    private Member member;
 
 }

@@ -43,8 +43,10 @@ public class DolbomRes {
 
     private final LocalDate repeatEndDate;
 
+    private final Integer pay;
+
     @QueryProjection
-    public DolbomRes(Long id, Set<KidRes> kids, Set<DolbomTimeSlotRes> timeSlots, Set<DayOfWeek> dows, TeacherProfileRes teacherProfile, DolbomLocationRes dolbomLocation, Time startTime, Time endTime, DolbomStatus status, DolbomCategory category, Boolean weeklyRepeat, Boolean setSeveralTime, LocalDate repeatStartDate, LocalDate repeatEndDate) {
+    public DolbomRes(Long id, Set<KidRes> kids, Set<DolbomTimeSlotRes> timeSlots, Set<DayOfWeek> dows, TeacherProfileRes teacherProfile, DolbomLocationRes dolbomLocation, Time startTime, Time endTime, DolbomStatus status, DolbomCategory category, Boolean weeklyRepeat, Boolean setSeveralTime, LocalDate repeatStartDate, LocalDate repeatEndDate, Integer pay) {
         this.id = id;
         this.kids = kids;
         this.timeSlots = timeSlots.stream().sorted((o1, o2) -> -o2.startDateTime().compareTo(o1.startDateTime())).toList();
@@ -59,5 +61,6 @@ public class DolbomRes {
         this.setSeveralTime = setSeveralTime;
         this.repeatStartDate = repeatStartDate;
         this.repeatEndDate = repeatEndDate;
+        this.pay = pay;
     }
 }
