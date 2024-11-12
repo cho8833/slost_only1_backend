@@ -1,10 +1,15 @@
 package com.slost_only1.slost_only1.repository.custom;
 
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.slost_only1.slost_only1.model.QTeacherDolbom;
 import com.slost_only1.slost_only1.model.QTeacherProfile;
 import com.slost_only1.slost_only1.model.TeacherProfile;
+import com.slost_only1.slost_only1.util.BooleanExpressionUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,5 +29,19 @@ public class TeacherProfileRepositoryCustomImpl implements TeacherProfileReposit
                 .innerJoin(qTeacherDolbom.teacherProfile, qTeacherProfile)
                 .where(qTeacherDolbom.dolbom.id.eq(id))
                 .fetch();
+    }
+
+    @Override
+    public Page<TeacherProfile> findByBname(String bname, Pageable pageable) {
+        List<TeacherProfile> fetch =  queryFactory.selectFrom(qTeacherProfile)
+                .where(BooleanExpressionUtil.eq(qTeacherProfile.address.bname, bname))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        JPAQuery<TeacherProfile> count = queryFactory.selectFrom(qTeacherProfile)
+                .where(BooleanExpressionUtil.eq(qTeacherProfile.address.bname, bname));
+
+        return PageableExecutionUtils.getPage(fetch,pageable, count::fetchCount);
+
     }
 }

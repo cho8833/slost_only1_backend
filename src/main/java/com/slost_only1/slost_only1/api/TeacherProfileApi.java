@@ -3,8 +3,13 @@ package com.slost_only1.slost_only1.api;
 import com.slost_only1.slost_only1.config.response.Response;
 import com.slost_only1.slost_only1.data.TeacherProfileRes;
 import com.slost_only1.slost_only1.data.req.TeacherProfileCreateReq;
+import com.slost_only1.slost_only1.model.TeacherProfile;
 import com.slost_only1.slost_only1.service.TeacherProfileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,5 +25,12 @@ public class TeacherProfileApi {
         return null;
     }
 
+    @GetMapping("/near")
+    public Response<Page<TeacherProfileRes>> getNearTeacher(@PageableDefault Pageable pageable,
+                                                            @RequestParam(required = false) String bname) {
+        Page<TeacherProfile> fetch = service.getNearTeacher(bname, pageable);
+        Page<TeacherProfileRes> result = fetch.map(TeacherProfileRes::from);
 
+        return new Response<>(result);
+    }
 }
