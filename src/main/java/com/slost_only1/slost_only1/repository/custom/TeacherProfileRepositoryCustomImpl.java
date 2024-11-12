@@ -2,6 +2,7 @@ package com.slost_only1.slost_only1.repository.custom;
 
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.slost_only1.slost_only1.enums.TeacherProfileStatus;
 import com.slost_only1.slost_only1.model.QTeacherDolbom;
 import com.slost_only1.slost_only1.model.QTeacherProfile;
 import com.slost_only1.slost_only1.model.TeacherProfile;
@@ -34,7 +35,8 @@ public class TeacherProfileRepositoryCustomImpl implements TeacherProfileReposit
     @Override
     public Page<TeacherProfile> findByBname(String bname, Pageable pageable) {
         List<TeacherProfile> fetch =  queryFactory.selectFrom(qTeacherProfile)
-                .where(BooleanExpressionUtil.eq(qTeacherProfile.address.bname, bname))
+                .where(BooleanExpressionUtil.eq(qTeacherProfile.address.bname, bname),
+                        BooleanExpressionUtil.eq(qTeacherProfile.status, TeacherProfileStatus.APPROVED))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
