@@ -42,6 +42,6 @@ public class DolbomApi {
 
     @GetMapping("/pending-teacher")
     public Response<List<TeacherProfile>> getPendingTeacher(@RequestParam Long dolbomId) {
-        return new Response<>(teacherProfileService.getPendingTeacher(dolbomId));
+        return new Response<>(teacherProfileService.getDolbomPendingTeacher(dolbomId));
     }
 }

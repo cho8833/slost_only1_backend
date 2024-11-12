@@ -1,8 +1,11 @@
 package com.slost_only1.slost_only1.repository.custom;
 
+import com.querydsl.core.ResultTransformer;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.slost_only1.slost_only1.data.TeacherProfileRes;
 import com.slost_only1.slost_only1.enums.TeacherProfileStatus;
+import com.slost_only1.slost_only1.model.QAvailableArea;
 import com.slost_only1.slost_only1.model.QTeacherDolbom;
 import com.slost_only1.slost_only1.model.QTeacherProfile;
 import com.slost_only1.slost_only1.model.TeacherProfile;
@@ -22,6 +25,7 @@ public class TeacherProfileRepositoryCustomImpl implements TeacherProfileReposit
     private final JPAQueryFactory queryFactory;
     QTeacherDolbom qTeacherDolbom = QTeacherDolbom.teacherDolbom;
     QTeacherProfile qTeacherProfile = QTeacherProfile.teacherProfile;
+    QAvailableArea qAvailableArea = QAvailableArea.availableArea;
 
     @Override
     public List<TeacherProfile> findByDolbomId(Long id) {
@@ -33,17 +37,18 @@ public class TeacherProfileRepositoryCustomImpl implements TeacherProfileReposit
     }
 
     @Override
-    public Page<TeacherProfile> findByBname(String bname, Pageable pageable) {
+    public Page<TeacherProfile> findBySigungu(String sigungu, Pageable pageable) {
         List<TeacherProfile> fetch =  queryFactory.selectFrom(qTeacherProfile)
-                .where(BooleanExpressionUtil.eq(qTeacherProfile.address.bname, bname),
+                .where(BooleanExpressionUtil.eq(qAvailableArea.sigungu, sigungu),
                         BooleanExpressionUtil.eq(qTeacherProfile.status, TeacherProfileStatus.APPROVED))
+                .innerJoin(qAvailableArea).on(qAvailableArea.teacherProfile.id.eq(qTeacherProfile.id))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
         JPAQuery<TeacherProfile> count = queryFactory.selectFrom(qTeacherProfile)
-                .where(BooleanExpressionUtil.eq(qTeacherProfile.address.bname, bname));
+                .innerJoin(qAvailableArea).on(qAvailableArea.teacherProfile.id.eq(qTeacherProfile.id))
+                .where(BooleanExpressionUtil.eq(qAvailableArea.sigungu, sigungu));
 
         return PageableExecutionUtils.getPage(fetch,pageable, count::fetchCount);
-
     }
 }

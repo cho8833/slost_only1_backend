@@ -63,6 +63,15 @@ public class CreateDummy {
     public void createTeacher() {
         Dolbom dolbom = dolbomRepository.findById(3L).orElseThrow();
 
+        Member member1 = new Member(
+                "username1",
+                "password",
+                "01023456789",
+                MemberType.TEACHER
+        );
+//        TeacherProfile teacherProfile = new TeacherProfile(
+//
+//        )
 
     }
 

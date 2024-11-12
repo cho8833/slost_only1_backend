@@ -5,6 +5,7 @@ import com.slost_only1.slost_only1.enums.Gender;
 import com.slost_only1.slost_only1.model.TeacherProfile;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record TeacherProfileRes(Long id, String name, Gender gender, String profileImageUrl, LocalDate birthday,
                                 String profileName) {

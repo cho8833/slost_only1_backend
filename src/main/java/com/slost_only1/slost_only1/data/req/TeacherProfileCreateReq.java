@@ -6,26 +6,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public final class TeacherProfileCreateReq {
-    private final String name;
-    private final Gender gender;
+    private String name;
+    private Gender gender;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private final LocalDate birthday;
-    private final String profileName;
-
-    public TeacherProfileCreateReq(String name, Gender gender, LocalDate birthday, String profileName) {
-        this.name = name;
-        this.gender = gender;
-        this.birthday = birthday;
-        this.profileName = profileName;
-    }
-
-
+    private LocalDate birthday;
+    private String profileName;
+    private List<AvailableAreaCreateReq> availableArea;
 
 
 }
