@@ -71,4 +71,9 @@ public class TeacherProfileServiceImpl implements TeacherProfileService {
 
         return TeacherProfileRes.from(teacherProfile);
     }
+
+    @Override
+    public TeacherProfile getTeacherProfile(Long id) {
+        return teacherProfileRepository.findById(id).orElseThrow();
+    }
 }

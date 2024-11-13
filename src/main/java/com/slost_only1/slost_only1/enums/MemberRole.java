@@ -1,17 +1,18 @@
 package com.slost_only1.slost_only1.enums;
 
 import com.slost_only1.slost_only1.base.BaseEnum;
+import org.springframework.security.core.GrantedAuthority;
 
-public enum MemberType implements BaseEnum {
+public enum MemberRole implements BaseEnum, GrantedAuthority {
 
-    PARENT("parent", "학부모"),
-    TEACHER("teacher", "선생님");
+    PARENT("PARENT", "학부모"),
+    TEACHER("TEACHER", "선생님");
 
     private final String name;
 
     private final String label;
 
-    MemberType(String name, String label) {
+    MemberRole(String name, String label) {
         this.name = name;
         this.label = label;
     }
@@ -29,5 +30,10 @@ public enum MemberType implements BaseEnum {
     @Override
     public String getDescr() {
         return null;
+    }
+
+    @Override
+    public String getAuthority() {
+        return name;
     }
 }

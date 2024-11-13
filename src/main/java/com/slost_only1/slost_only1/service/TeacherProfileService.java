@@ -19,4 +19,6 @@ public interface TeacherProfileService {
     List<AvailableArea> getAvailableArea(Long teacherProfileId);
 
     TeacherProfileRes createProfile(TeacherProfileCreateReq req, MultipartFile profileImg);
+
+    TeacherProfile getTeacherProfile(Long id);
 }

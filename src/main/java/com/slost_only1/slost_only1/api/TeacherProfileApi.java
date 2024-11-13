@@ -10,6 +10,7 @@ import com.slost_only1.slost_only1.data.TeacherProfileRes;
 import com.slost_only1.slost_only1.data.req.TeacherProfileCreateReq;
 import com.slost_only1.slost_only1.model.TeacherProfile;
 import com.slost_only1.slost_only1.service.TeacherProfileService;
+import com.slost_only1.slost_only1.util.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/teacher")
@@ -25,6 +27,8 @@ import java.util.List;
 public class TeacherProfileApi {
 
     private final TeacherProfileService service;
+
+    private final AuthUtil authUtil;
 
     @PostMapping
     public Response<TeacherProfileRes> createTeacherProfile(@RequestPart("profile") String req, @RequestPart("profileImg") MultipartFile profileImg) {
@@ -53,5 +57,21 @@ public class TeacherProfileApi {
         return new Response<>(
                 service.getAvailableArea(teacherProfileId).stream().map(AvailableAreaRes::from).toList()
         );
+    }
+
+    @GetMapping("/me")
+    public Response<TeacherProfileRes> getMyTeacherProfile() {
+        try {
+            return new Response<>(TeacherProfileRes.from(
+                    service.getTeacherProfile(authUtil.getLoginMemberId()))
+            );
+        } catch (NoSuchElementException e) {
+            throw new CustomException(ResponseCode.DATA_NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/{id}")
+    public Response<TeacherProfileRes> getTeacherProfile(@PathVariable Long id) {
+        return new Response<>(TeacherProfileRes.from(service.getTeacherProfile(id)));
     }
 }

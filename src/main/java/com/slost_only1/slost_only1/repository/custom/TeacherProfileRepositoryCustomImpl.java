@@ -1,9 +1,7 @@
 package com.slost_only1.slost_only1.repository.custom;
 
-import com.querydsl.core.ResultTransformer;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.slost_only1.slost_only1.data.TeacherProfileRes;
 import com.slost_only1.slost_only1.enums.TeacherProfileStatus;
 import com.slost_only1.slost_only1.model.QAvailableArea;
 import com.slost_only1.slost_only1.model.QTeacherDolbom;
@@ -16,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository

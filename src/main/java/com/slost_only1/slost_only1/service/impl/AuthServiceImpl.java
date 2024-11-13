@@ -6,6 +6,7 @@ import com.slost_only1.slost_only1.config.response.ResponseCode;
 import com.slost_only1.slost_only1.data.*;
 import com.slost_only1.slost_only1.data.req.SignInReq;
 import com.slost_only1.slost_only1.data.req.SignUpReq;
+import com.slost_only1.slost_only1.enums.MemberRole;
 import com.slost_only1.slost_only1.model.Member;
 import com.slost_only1.slost_only1.repository.MemberRepository;
 import com.slost_only1.slost_only1.service.AuthService;
@@ -35,12 +36,16 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthorizationTokenData testSignIn() {
-        Member member = memberRepository.findById(1L).orElseThrow();
+    public AuthorizationTokenData testSignIn(MemberRole role) {
+        Long id;
+        if (role == MemberRole.PARENT) {
+            id = 2L;
+        } else {
+            id = 1L;
+        }
+        Member member = memberRepository.findById(id).orElseThrow();
         AuthorizationTokenData tokenData = tokenProvider.generateAuthorizationTokenData(member);
-
         return tokenData;
-
     }
 
     @Override

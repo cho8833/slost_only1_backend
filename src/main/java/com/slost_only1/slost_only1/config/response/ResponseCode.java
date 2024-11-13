@@ -20,7 +20,7 @@ public enum ResponseCode {
     FORBIDDEN(403,  "Forbidden", "권한 없음"),
 
     //데이터 찾을수 없을 경우 사용
-    DATA_NOT_FOUND(500,  "데이터를 찾을 수 없습니다.", "데이터를 찾을수 없는 경우");
+    DATA_NOT_FOUND(404,  "데이터를 찾을 수 없습니다.", "데이터를 찾을수 없는 경우");
 
     private final int status;
     private final String message;

@@ -3,6 +3,7 @@ package com.slost_only1.slost_only1.auth;
 import com.slost_only1.slost_only1.config.exception.CustomException;
 import com.slost_only1.slost_only1.config.response.ResponseCode;
 import com.slost_only1.slost_only1.data.AuthorizationTokenData;
+import com.slost_only1.slost_only1.enums.MemberRole;
 import com.slost_only1.slost_only1.model.Member;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -12,15 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -30,7 +26,7 @@ public class AuthorizationTokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "Bearer";
 
-    private static final long ACCESS_TOKEN_EXPIRE_TIME  = 1000L * 60 * 60 * 24 * 7;    // 7일
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 7;    // 7일
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 30;   // 30일
 
     private final Key key;
@@ -48,7 +44,8 @@ public class AuthorizationTokenProvider {
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         String accessToken = Jwts.builder()
                 .setSubject(String.valueOf(authentication.getId()))                     // payload "sub": "{id}"
-                .setExpiration(accessTokenExpiresIn)                                    // payload "exp": 1516239022
+                .setExpiration(accessTokenExpiresIn) // payload "exp": 1516239022
+                .claim(AUTHORITIES_KEY, authentication.getRole())
                 .signWith(key, SignatureAlgorithm.HS512)                                // header "alg": "HS512"
                 .compact();
 
@@ -70,20 +67,17 @@ public class AuthorizationTokenProvider {
         // 토큰 복호화
         Claims claims = parseClaims(accessToken);
 
-//        if (claims.get(AUTHORITIES_KEY) == null) {
-//            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
-//        }
+        if (claims.get(AUTHORITIES_KEY) == null) {
+            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+        }
 
-//        // 클레임에서 권한 정보 가져오기
-//        Collection<? extends GrantedAuthority> authorities =
-//                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-//                        .map(SimpleGrantedAuthority::new)
-//                        .collect(Collectors.toList());
+        // 클레임에서 권한 정보 가져오기
+        MemberRole role =
+                MemberRole.valueOf(claims.get(AUTHORITIES_KEY).toString());
 
-        // UserDetails 객체를 만들어서 Authentication 리턴
         Long memberId = Long.valueOf(claims.getSubject());
 
-        return new UsernamePasswordAuthenticationToken(memberId, null, null);
+        return new UsernamePasswordAuthenticationToken(memberId, null, List.of(role));
     }
 
     public Long getSubject(String accessToken) {

@@ -8,7 +8,6 @@ import lombok.Getter;
 import java.sql.Time;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -23,9 +22,9 @@ public class DolbomRes {
 
     private final Set<DayOfWeek> dayOfWeeks;
 
-    private final TeacherProfileRes teacherProfile;
-
     private final DolbomLocationRes dolbomLocation;
+
+    private final Long teacherProfileId;
 
     private final Time startTime;
 
@@ -46,13 +45,13 @@ public class DolbomRes {
     private final Integer pay;
 
     @QueryProjection
-    public DolbomRes(Long id, Set<KidRes> kids, Set<DolbomTimeSlotRes> timeSlots, Set<DayOfWeek> dows, TeacherProfileRes teacherProfile, DolbomLocationRes dolbomLocation, Time startTime, Time endTime, DolbomStatus status, DolbomCategory category, Boolean weeklyRepeat, Boolean setSeveralTime, LocalDate repeatStartDate, LocalDate repeatEndDate, Integer pay) {
+    public DolbomRes(Long id, Set<KidRes> kids, Set<DolbomTimeSlotRes> timeSlots, Set<DayOfWeek> dows, DolbomLocationRes dolbomLocation, Long teacherProfileId, Time startTime, Time endTime, DolbomStatus status, DolbomCategory category, Boolean weeklyRepeat, Boolean setSeveralTime, LocalDate repeatStartDate, LocalDate repeatEndDate, Integer pay) {
         this.id = id;
         this.kids = kids;
         this.timeSlots = timeSlots.stream().sorted((o1, o2) -> -o2.startDateTime().compareTo(o1.startDateTime())).toList();
         this.dayOfWeeks = dows;
-        this.teacherProfile = teacherProfile;
         this.dolbomLocation = dolbomLocation;
+        this.teacherProfileId = teacherProfileId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.status = status;

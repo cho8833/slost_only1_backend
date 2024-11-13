@@ -1,13 +1,15 @@
 package com.slost_only1.slost_only1;
 
 import com.slost_only1.slost_only1.enums.Gender;
-import com.slost_only1.slost_only1.enums.MemberType;
+import com.slost_only1.slost_only1.enums.MemberRole;
+import com.slost_only1.slost_only1.enums.TeacherProfileStatus;
 import com.slost_only1.slost_only1.model.*;
 import com.slost_only1.slost_only1.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,18 +35,24 @@ public class CreateDummy {
     @Autowired
     private TeacherDolbomRepository teacherDolbomRepository;
 
+    @Autowired
+    private CertificateRepository certificateRepository;
+
+    @Autowired
+    private AvailableAreaRepository availableAreaRepository;
+
 
 
 
     @Test
-    public void createDummyData1() {
+    public void createParentDummy() {
 
         LocalDateTime now = LocalDateTime.now();
         Member member1 = new Member(
                 "username1",
                 "password",
                 "01012345678",
-                MemberType.PARENT
+                MemberRole.PARENT
         );
         Kid kid1 = new Kid(
                 member1,
@@ -61,18 +69,37 @@ public class CreateDummy {
 
     @Test
     public void createTeacher() {
-        Dolbom dolbom = dolbomRepository.findById(3L).orElseThrow();
-
-        Member member1 = new Member(
-                "username1",
+        Member member = new Member(
+                "username2",
                 "password",
                 "01023456789",
-                MemberType.TEACHER
+                MemberRole.TEACHER
         );
-//        TeacherProfile teacherProfile = new TeacherProfile(
-//
-//        )
+        memberRepository.save(member);
 
+        TeacherProfile teacherProfile = new TeacherProfile(
+            "선생님1",
+                Gender.FEMALE,
+                LocalDate.of(2000, 8, 13),
+                "좋은 선생님",
+                "https://s.pstatic.net/static/www/mobile/edit/20240112_1095/upload_1705057885416AaxUM.png",
+                TeacherProfileStatus.APPROVED,
+                member
+        );
+        teacherProfileRepository.save(teacherProfile);
+
+        Certificate certificate1 = new Certificate("9급 자격증", member);
+        Certificate certificate2 = new Certificate("8급 자격증", member);
+
+        certificateRepository.saveAll(List.of(certificate1, certificate2));
+
+        AvailableArea area1 = new AvailableArea(
+                "경남", "창원시 진해구", teacherProfile
+        );
+        AvailableArea area2 = new AvailableArea(
+                "경남", "창원시 마산합포구", teacherProfile
+        );
+        availableAreaRepository.saveAll(List.of(area1, area2));
     }
 
     @Test
@@ -89,7 +116,7 @@ public class CreateDummy {
                     "username" + i,
                     "password" + i,
                     "0101234567" + i,
-                    MemberType.PARENT
+                    MemberRole.PARENT
             ));
         }
         memberRepository.saveAll(members);

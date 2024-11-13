@@ -4,6 +4,7 @@ import com.slost_only1.slost_only1.config.response.Response;
 import com.slost_only1.slost_only1.data.*;
 import com.slost_only1.slost_only1.data.req.SignInReq;
 import com.slost_only1.slost_only1.data.req.SignUpReq;
+import com.slost_only1.slost_only1.enums.MemberRole;
 import com.slost_only1.slost_only1.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +18,13 @@ public class AuthApi {
 
     @PostMapping("/sign-in/idpw")
     public Response<AuthorizationTokenData> signIn(@RequestBody SignInReq req) {
+        return new Response<>(authService.signIn(req));
+    }
+
+    @PostMapping("/sign-in/test")
+    public Response<AuthorizationTokenData> signIn(@RequestParam MemberRole role) {
 //        return new Response<>(authService.signIn(req));
-        return new Response<>(authService.testSignIn());
+        return new Response<>(authService.testSignIn(role));
     }
 
     @PostMapping("/signUp")

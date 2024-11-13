@@ -74,13 +74,28 @@ public class DolbomServiceImpl implements DolbomService {
     }
 
     @Override
-    public Page<DolbomRes> getMyDolbom(DolbomStatus status, Pageable pageable) {
+    public Page<DolbomRes> getParentDolbom(DolbomStatus status, Pageable pageable) {
         Long memberId = authUtil.getLoginMemberId();
 
         return dolbomRepository.findByMemberIdAndAddressAndStatus(
                 memberId,
+                new AddressListReq(),
                 status,
                 pageable
         );
+    }
+
+    @Override
+    public Page<DolbomRes> getMatchingDolbom(AddressListReq addressReq, Pageable pageable) {
+        return dolbomRepository.findByMemberIdAndAddressAndStatus(null,
+                addressReq,
+                DolbomStatus.MATCHING,
+                pageable);
+
+    }
+
+    @Override
+    public Page<DolbomRes> getTeacherDolbom(DolbomStatus status, Pageable pageReq) {
+        return dolbomRepository.findByTeacherIdAndStatus(authUtil.getLoginMemberId(), status, pageReq);
     }
 }
