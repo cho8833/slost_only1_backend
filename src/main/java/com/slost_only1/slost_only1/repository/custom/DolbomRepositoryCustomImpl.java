@@ -35,7 +35,7 @@ public class DolbomRepositoryCustomImpl implements DolbomRepositoryCustom {
 
 
     @Override
-    public Page<DolbomRes> findByMemberIdAndAddressAndStatus(Long memberId, AddressListReq addressListReq, DolbomStatus status, Pageable pageable) {
+    public Page<DolbomRes> findByMemberIdAndAddressAndStatus(Long memberId, DolbomStatus status, Pageable pageable) {
         List<DolbomRes> fetch = queryFactory.selectFrom(qDolbom)
                 .innerJoin(qDolbom.dolbomLocation, qDolbomLocation)
                 .innerJoin(qDolbomTimeSlot).on(qDolbomTimeSlot.dolbom.id.eq(qDolbom.id))
@@ -46,9 +46,6 @@ public class DolbomRepositoryCustomImpl implements DolbomRepositoryCustom {
                 .leftJoin(qDolbomReview).on(qDolbomReview.dolbom.id.eq(qDolbom.id))
                 .where(
                         BooleanExpressionUtil.eq(qDolbom.member.id, memberId),
-                        BooleanExpressionUtil.eq(qDolbom.dolbomLocation.address.sido, addressListReq.getSido()),
-                        BooleanExpressionUtil.eq(qDolbom.dolbomLocation.address.sigungu, addressListReq.getSigungu()),
-                        BooleanExpressionUtil.eq(qDolbom.dolbomLocation.address.bname, addressListReq.getBname()),
                         BooleanExpressionUtil.eq(qDolbom.status, status)
                 )
                 .offset(pageable.getOffset())
@@ -60,9 +57,6 @@ public class DolbomRepositoryCustomImpl implements DolbomRepositoryCustom {
                 .innerJoin(qDolbom.dolbomLocation, qDolbomLocation)
                 .where(
                         BooleanExpressionUtil.eq(qDolbom.member.id, memberId),
-                        BooleanExpressionUtil.eq(qDolbom.dolbomLocation.address.sido, addressListReq.getSido()),
-                        BooleanExpressionUtil.eq(qDolbom.dolbomLocation.address.sigungu, addressListReq.getSigungu()),
-                        BooleanExpressionUtil.eq(qDolbom.dolbomLocation.address.bname, addressListReq.getBname()),
                         BooleanExpressionUtil.eq(qDolbom.status, status)
                 );
         return PageableExecutionUtils.getPage(fetch, pageable, count::fetchCount);

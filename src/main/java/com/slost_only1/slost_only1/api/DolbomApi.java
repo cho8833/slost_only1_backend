@@ -34,10 +34,9 @@ public class DolbomApi {
     }
 
     @GetMapping("/me")
-    public Response<Page<DolbomRes>> getMyDolbom(@ModelAttribute AddressListReq addressListReq,
-                                                 @RequestParam(required = false) DolbomStatus status,
+    public Response<Page<DolbomRes>> getMyDolbom(@RequestParam(required = false) DolbomStatus status,
                                                  @PageableDefault Pageable pageReq) {
-        return new Response<>(dolbomService.getMyDolbom(addressListReq, status, pageReq));
+        return new Response<>(dolbomService.getMyDolbom(status, pageReq));
     }
 
     @GetMapping("/pending-teacher")

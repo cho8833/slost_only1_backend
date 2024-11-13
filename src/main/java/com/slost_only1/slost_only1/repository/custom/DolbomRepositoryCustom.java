@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 public interface DolbomRepositoryCustom {
 
-    Page<DolbomRes> findByMemberIdAndAddressAndStatus(Long memberId, AddressListReq addressListReq, DolbomStatus status, Pageable pageable);
+    Page<DolbomRes> findByMemberIdAndAddressAndStatus(Long memberId, DolbomStatus status, Pageable pageable);
 }
