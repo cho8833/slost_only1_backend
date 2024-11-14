@@ -5,9 +5,8 @@ import com.slost_only1.slost_only1.base.BaseEnum;
 public enum DolbomCategory implements BaseEnum {
     SW("sw", "소프트웨어"),
     MATH("math", "수학"),
+    EXPERIENCE("experience", "체험"),
     ENGLISH("english", "영어");
-
-
 
     private final String name;
 

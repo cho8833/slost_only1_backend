@@ -46,7 +46,6 @@ public class DolbomApi {
         } else {
             return new Response<>(dolbomService.getTeacherDolbom(status, pageReq));
         }
-
     }
 
     @GetMapping("/matching")
@@ -68,5 +67,11 @@ public class DolbomApi {
     @GetMapping("/teacher/applied")
     public Response<Page<DolbomRes>> getTeacherAppliedDolbom(@PageableDefault Pageable pageable) {
         return new Response<>(dolbomService.getTeacherAppliedDolbom(pageable));
+    }
+
+    @PostMapping("/apply")
+    public Response<?> apply(@RequestParam Long dolbomId) {
+        dolbomService.apply(dolbomId);
+        return Response.SUCCESS;
     }
 }

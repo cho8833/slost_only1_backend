@@ -49,7 +49,6 @@ public class DolbomRepositoryCustomImpl implements DolbomRepositoryCustom {
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-
                 .transform(dolbomResProjection());
 
         JPAQuery<Dolbom> count = queryFactory.selectFrom(qDolbom)

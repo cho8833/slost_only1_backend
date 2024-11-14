@@ -33,7 +33,7 @@ public class CreateDummy {
     private TeacherProfileRepository teacherProfileRepository;
 
     @Autowired
-    private TeacherDolbomRepository teacherDolbomRepository;
+    private DolbomAppliedTeacherRepository dolbomAppliedTeacherRepository;
 
     @Autowired
     private CertificateRepository certificateRepository;
@@ -41,27 +41,25 @@ public class CreateDummy {
     @Autowired
     private AvailableAreaRepository availableAreaRepository;
 
-
-
-
     @Test
     public void createParentDummy() {
 
         LocalDateTime now = LocalDateTime.now();
         Member member1 = new Member(
-                "username1",
+                "username3",
                 "password",
-                "01012345678",
+                "01034567890",
                 MemberRole.PARENT
         );
         Kid kid1 = new Kid(
                 member1,
-                "홍길동", now.minusYears(5), Gender.MALE, "귀여움", "행동이 서툼"
+                "3번아이", now.minusYears(5), Gender.MALE, "귀여움", "행동이 서툼"
         );
         DolbomLocation dolbomLocation1 = new DolbomLocation(
-                new Address("경상남도", "창원시", "장천동", "경상남도 창원시 행암로 25", "117동 405호"),
+                new Address("경남", "창원시 마산합포구", "장천동", "경상남도 창원시 행암로 25", "115동 404호"),
                 member1, "우리집"
         );
+
         memberRepository.save(member1);
         kidRepository.save(kid1);
         dolbomLocationRepository.save(dolbomLocation1);
@@ -104,10 +102,6 @@ public class CreateDummy {
 
     @Test
     public void createDummyData2() {
-//        dolbomNoticeRepository.deleteAll();
-//        dolbomLocationRepository.deleteAll();
-//        kidRepository.deleteAll();
-//        memberRepository.deleteAll();
         LocalDateTime now = LocalDateTime.now();
 
         List<Member> members = new ArrayList<>();
@@ -137,18 +131,5 @@ public class CreateDummy {
         dolbomLocations.add(new DolbomLocation(new Address("대구광역시", "수성구", "지산동", "대구 수성구 지산로 39", "202동 1101호"), members.get(3), "집4"));
         dolbomLocations.add(new DolbomLocation(new Address("광주광역시", "서구", "상무동", "광주 서구 상무대로 18", "5동 307호"), members.get(4), "집5"));
         dolbomLocationRepository.saveAll(dolbomLocations);
-
-//        List<DolbomNotice> dolbomNotices = new ArrayList<>();
-//        for (int i = 0; i < 5; i++) {
-//            dolbomNotices.add(new DolbomNotice(
-//                    now,
-//                    now.plusMonths(1),
-//                    100000L + (i * 5000),
-//                    members.get(i),
-//                    dolbomLocations.get(i),
-//                    kids.get(i)
-//            ));
-//        }
-//        dolbomNoticeRepository.saveAll(dolbomNotices);
     }
 }

@@ -7,7 +7,7 @@ import com.slost_only1.slost_only1.model.AvailableArea;
 import com.slost_only1.slost_only1.model.Member;
 import com.slost_only1.slost_only1.model.TeacherProfile;
 import com.slost_only1.slost_only1.repository.AvailableAreaRepository;
-import com.slost_only1.slost_only1.repository.TeacherDolbomRepository;
+import com.slost_only1.slost_only1.repository.DolbomAppliedTeacherRepository;
 import com.slost_only1.slost_only1.repository.TeacherProfileRepository;
 import com.slost_only1.slost_only1.service.TeacherProfileService;
 import com.slost_only1.slost_only1.util.AuthUtil;
@@ -27,7 +27,7 @@ public class TeacherProfileServiceImpl implements TeacherProfileService {
 
     private final TeacherProfileRepository teacherProfileRepository;
 
-    private final TeacherDolbomRepository teacherDolbomRepository;
+    private final DolbomAppliedTeacherRepository dolbomAppliedTeacherRepository;
 
     private final AvailableAreaRepository availableAreaRepository;
 
@@ -74,6 +74,6 @@ public class TeacherProfileServiceImpl implements TeacherProfileService {
 
     @Override
     public TeacherProfile getTeacherProfile(Long id) {
-        return teacherProfileRepository.findById(id).orElseThrow();
+        return teacherProfileRepository.findByMemberId(id).orElseThrow();
     }
 }

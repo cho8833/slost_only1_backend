@@ -36,7 +36,7 @@ public class TeacherProfileRepositoryCustomImpl implements TeacherProfileReposit
 
     @Override
     public Page<TeacherProfile> findBySigungu(String sigungu, Pageable pageable) {
-        List<TeacherProfile> fetch =  queryFactory.selectFrom(qTeacherProfile)
+        List<TeacherProfile> fetch = queryFactory.selectFrom(qTeacherProfile)
                 .where(BooleanExpressionUtil.eq(qAvailableArea.sigungu, sigungu),
                         BooleanExpressionUtil.eq(qTeacherProfile.status, TeacherProfileStatus.APPROVED))
                 .innerJoin(qAvailableArea).on(qAvailableArea.teacherProfile.id.eq(qTeacherProfile.id))
@@ -45,8 +45,8 @@ public class TeacherProfileRepositoryCustomImpl implements TeacherProfileReposit
                 .fetch();
         JPAQuery<TeacherProfile> count = queryFactory.selectFrom(qTeacherProfile)
                 .innerJoin(qAvailableArea).on(qAvailableArea.teacherProfile.id.eq(qTeacherProfile.id))
-                .where(BooleanExpressionUtil.eq(qAvailableArea.sigungu, sigungu));
+                .where(BooleanExpressionUtil.eq(qAvailableArea.sigungu, sigungu), BooleanExpressionUtil.eq(qTeacherProfile.status, TeacherProfileStatus.APPROVED));
 
-        return PageableExecutionUtils.getPage(fetch,pageable, count::fetchCount);
+        return PageableExecutionUtils.getPage(fetch, pageable, count::fetchCount);
     }
 }

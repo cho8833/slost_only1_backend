@@ -5,9 +5,11 @@ import com.slost_only1.slost_only1.repository.custom.TeacherProfileRepositoryCus
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface TeacherProfileRepository extends JpaRepository<TeacherProfile, Long>, TeacherProfileRepositoryCustom {
 
-    TeacherProfile findByMemberId(Long id);
+    Optional<TeacherProfile> findByMemberId(Long id);
 
 }
