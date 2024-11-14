@@ -59,4 +59,14 @@ public class DolbomApi {
     public Response<List<TeacherProfile>> getPendingTeacher(@RequestParam Long dolbomId) {
         return new Response<>(teacherProfileService.getDolbomPendingTeacher(dolbomId));
     }
+
+    @GetMapping("/teacher/me")
+    public Response<Page<DolbomRes>> getTeacherDolbom(@PageableDefault Pageable pageable, @RequestParam DolbomStatus status) {
+        return new Response<>(dolbomService.getTeacherDolbom(status, pageable));
+    }
+
+    @GetMapping("/teacher/applied")
+    public Response<Page<DolbomRes>> getTeacherAppliedDolbom(@PageableDefault Pageable pageable) {
+        return new Response<>(dolbomService.getTeacherAppliedDolbom(pageable));
+    }
 }

@@ -10,5 +10,7 @@ public interface DolbomRepositoryCustom {
 
     Page<DolbomRes> findByMemberIdAndAddressAndStatus(Long memberId, AddressListReq addressListReq, DolbomStatus status, Pageable pageable);
 
+    Page<DolbomRes> findByAppliedTeacherId(Long teacherId, Pageable pageable);
+
     Page<DolbomRes> findByTeacherIdAndStatus(Long teacherId, DolbomStatus status, Pageable pageable);
 }

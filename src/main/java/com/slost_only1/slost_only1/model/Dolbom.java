@@ -1,7 +1,6 @@
 package com.slost_only1.slost_only1.model;
 
 import com.slost_only1.slost_only1.base.BaseEntity;
-import com.slost_only1.slost_only1.data.req.DolbomPostReq;
 import com.slost_only1.slost_only1.enums.DolbomCategory;
 import com.slost_only1.slost_only1.enums.DolbomStatus;
 import jakarta.persistence.*;
@@ -9,13 +8,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.sql.Time;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter

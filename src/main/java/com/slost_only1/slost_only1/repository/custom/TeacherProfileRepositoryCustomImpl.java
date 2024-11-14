@@ -4,7 +4,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.slost_only1.slost_only1.enums.TeacherProfileStatus;
 import com.slost_only1.slost_only1.model.QAvailableArea;
-import com.slost_only1.slost_only1.model.QTeacherDolbom;
+import com.slost_only1.slost_only1.model.QDolbomAppliedTeacher;
 import com.slost_only1.slost_only1.model.QTeacherProfile;
 import com.slost_only1.slost_only1.model.TeacherProfile;
 import com.slost_only1.slost_only1.util.BooleanExpressionUtil;
@@ -14,7 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -22,7 +21,7 @@ import java.util.List;
 public class TeacherProfileRepositoryCustomImpl implements TeacherProfileRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
-    QTeacherDolbom qTeacherDolbom = QTeacherDolbom.teacherDolbom;
+    QDolbomAppliedTeacher qTeacherDolbom = QDolbomAppliedTeacher.dolbomAppliedTeacher;
     QTeacherProfile qTeacherProfile = QTeacherProfile.teacherProfile;
     QAvailableArea qAvailableArea = QAvailableArea.availableArea;
 

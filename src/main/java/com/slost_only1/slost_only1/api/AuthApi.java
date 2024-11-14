@@ -22,7 +22,7 @@ public class AuthApi {
     }
 
     @PostMapping("/sign-in/test")
-    public Response<AuthorizationTokenData> signIn(@RequestParam MemberRole role) {
+    public Response<AuthorizationTokenData> testSignIn(@RequestParam MemberRole role) {
 //        return new Response<>(authService.signIn(req));
         return new Response<>(authService.testSignIn(role));
     }

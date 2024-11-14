@@ -15,9 +15,9 @@ import org.hibernate.annotations.SQLRestriction;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE teacher_dolbom SET deleted = true WHERE id = ?")
+@SQLDelete(sql = "UPDATE dolbom_applied_teacher SET deleted = true WHERE id = ?")
 @SQLRestriction("deleted <> TRUE")
-public class TeacherDolbom extends BaseEntity {
+public class DolbomAppliedTeacher extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Dolbom dolbom;
 

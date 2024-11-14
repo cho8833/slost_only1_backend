@@ -7,8 +7,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.*;
 
 @Entity
 @Getter
@@ -22,5 +21,6 @@ public class KidDolbom extends BaseEntity {
     private Dolbom dolbom;
 
     @ManyToOne(fetch = FetchType.LAZY)
+
     private Kid kid;
 }

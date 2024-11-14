@@ -98,4 +98,9 @@ public class DolbomServiceImpl implements DolbomService {
     public Page<DolbomRes> getTeacherDolbom(DolbomStatus status, Pageable pageReq) {
         return dolbomRepository.findByTeacherIdAndStatus(authUtil.getLoginMemberId(), status, pageReq);
     }
+
+    @Override
+    public Page<DolbomRes> getTeacherAppliedDolbom(Pageable pageReq) {
+        return dolbomRepository.findByAppliedTeacherId(authUtil.getLoginMemberId(), pageReq);
+    }
 }

@@ -15,4 +15,6 @@ public interface DolbomService {
     Page<DolbomRes> getMatchingDolbom(AddressListReq addressReq, Pageable pageable);
 
     Page<DolbomRes> getTeacherDolbom(DolbomStatus status, Pageable pageReq);
+
+    Page<DolbomRes> getTeacherAppliedDolbom(Pageable pageReq);
 }
