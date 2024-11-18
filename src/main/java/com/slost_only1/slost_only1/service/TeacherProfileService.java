@@ -20,5 +20,7 @@ public interface TeacherProfileService {
 
     TeacherProfileRes createProfile(TeacherProfileCreateReq req, MultipartFile profileImg);
 
-    TeacherProfile getTeacherProfile(Long id);
+    TeacherProfile getTeacherProfileById(Long id);
+
+    Page<TeacherProfile> getTeacherProfile(Pageable pageable);
 }

@@ -63,7 +63,7 @@ public class TeacherProfileApi {
     public Response<TeacherProfileRes> getMyTeacherProfile() {
         try {
             return new Response<>(TeacherProfileRes.from(
-                    service.getTeacherProfile(authUtil.getLoginMemberId()))
+                    service.getTeacherProfileById(authUtil.getLoginMemberId()))
             );
         } catch (NoSuchElementException e) {
             throw new CustomException(ResponseCode.DATA_NOT_FOUND);
@@ -71,7 +71,14 @@ public class TeacherProfileApi {
     }
 
     @GetMapping("/{id}")
-    public Response<TeacherProfileRes> getTeacherProfile(@PathVariable Long id) {
-        return new Response<>(TeacherProfileRes.from(service.getTeacherProfile(id)));
+    public Response<TeacherProfileRes> getTeacherProfileById(@PathVariable Long id) {
+        return new Response<>(TeacherProfileRes.from(service.getTeacherProfileById(id)));
+    }
+
+    @GetMapping
+    public Response<Page<TeacherProfileRes>> getTeacherProfiles(@PageableDefault Pageable pageable) {
+        Page<TeacherProfile> fetch = service.getTeacherProfile(pageable);
+        Page<TeacherProfileRes> result = fetch.map(TeacherProfileRes::from);
+        return new Response<>(result);
     }
 }

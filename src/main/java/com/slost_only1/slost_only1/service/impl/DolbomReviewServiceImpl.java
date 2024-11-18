@@ -11,5 +11,4 @@ public class DolbomReviewServiceImpl implements DolbomReviewService {
 
     private final DolbomReviewRepository repository;
 
-
 }

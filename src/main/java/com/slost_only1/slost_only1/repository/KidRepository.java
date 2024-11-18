@@ -9,4 +9,6 @@ public interface KidRepository extends JpaRepository<Kid, Long> {
 
 
     List<Kid> findByMemberId(Long memberId);
+
+    long countByMemberId(Long id);
 }

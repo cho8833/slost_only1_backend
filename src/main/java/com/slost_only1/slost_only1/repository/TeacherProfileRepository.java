@@ -12,4 +12,5 @@ public interface TeacherProfileRepository extends JpaRepository<TeacherProfile, 
 
     Optional<TeacherProfile> findByMemberId(Long id);
 
+
 }

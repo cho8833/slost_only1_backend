@@ -34,6 +34,12 @@ public class KidServiceImpl implements KidService {
     @Override
     public Kid createKid(KidCreateReq req) {
         Member member = entityManager.find(Member.class, authUtil.getLoginMemberId());
+
+        long kidsCount = repository.countByMemberId(member.getId());
+        if (kidsCount > 9) {
+            throw new CustomException(ResponseCode.NO_MORE_KID);
+        }
+
         Kid newKid = Kid.from(req, member);
 
         repository.save(newKid);

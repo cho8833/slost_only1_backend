@@ -39,7 +39,7 @@ public class AuthServiceImpl implements AuthService {
     public AuthorizationTokenData testSignIn(MemberRole role) {
         Long id;
         if (role == MemberRole.PARENT) {
-            id = 2L;
+            id = 3L;
         } else {
             id = 1L;
         }

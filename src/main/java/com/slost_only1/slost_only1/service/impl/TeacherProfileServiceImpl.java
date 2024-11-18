@@ -73,7 +73,12 @@ public class TeacherProfileServiceImpl implements TeacherProfileService {
     }
 
     @Override
-    public TeacherProfile getTeacherProfile(Long id) {
+    public TeacherProfile getTeacherProfileById(Long id) {
         return teacherProfileRepository.findByMemberId(id).orElseThrow();
+    }
+
+    @Override
+    public Page<TeacherProfile> getTeacherProfile(Pageable pageable) {
+        return teacherProfileRepository.findAll(pageable);
     }
 }

@@ -65,6 +65,7 @@ public class CreateDummy {
         dolbomLocationRepository.save(dolbomLocation1);
     }
 
+
     @Test
     public void createTeacher() {
         Member member = new Member(
@@ -76,18 +77,18 @@ public class CreateDummy {
         memberRepository.save(member);
 
         TeacherProfile teacherProfile = new TeacherProfile(
-            "선생님1",
+            "선생님2",
                 Gender.FEMALE,
                 LocalDate.of(2000, 8, 13),
-                "좋은 선생님",
+                "착한 선생님",
                 "https://s.pstatic.net/static/www/mobile/edit/20240112_1095/upload_1705057885416AaxUM.png",
                 TeacherProfileStatus.APPROVED,
                 member
         );
         teacherProfileRepository.save(teacherProfile);
 
-        Certificate certificate1 = new Certificate("9급 자격증", member);
-        Certificate certificate2 = new Certificate("8급 자격증", member);
+        Certificate certificate1 = new Certificate("91급 자격증", member);
+        Certificate certificate2 = new Certificate("81급 자격증", member);
 
         certificateRepository.saveAll(List.of(certificate1, certificate2));
 
