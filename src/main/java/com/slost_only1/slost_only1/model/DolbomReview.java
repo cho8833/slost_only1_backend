@@ -27,4 +27,7 @@ public class DolbomReview extends BaseEntity {
 
     @Column
     private Long star;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;
 }

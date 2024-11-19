@@ -2,14 +2,18 @@ package com.slost_only1.slost_only1.api;
 
 import com.slost_only1.slost_only1.config.response.Response;
 import com.slost_only1.slost_only1.data.DolbomRes;
+import com.slost_only1.slost_only1.data.DolbomReviewRes;
 import com.slost_only1.slost_only1.data.req.AddressListReq;
 import com.slost_only1.slost_only1.data.req.DolbomPostReq;
 import com.slost_only1.slost_only1.enums.DolbomStatus;
 import com.slost_only1.slost_only1.enums.MemberRole;
+import com.slost_only1.slost_only1.model.DolbomReview;
 import com.slost_only1.slost_only1.model.TeacherProfile;
+import com.slost_only1.slost_only1.service.DolbomReviewService;
 import com.slost_only1.slost_only1.service.DolbomService;
 import com.slost_only1.slost_only1.service.TeacherProfileService;
 import com.slost_only1.slost_only1.util.AuthUtil;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +30,8 @@ public class DolbomApi {
     private final DolbomService dolbomService;
 
     private final TeacherProfileService teacherProfileService;
+
+    private final DolbomReviewService dolbomReviewService;
 
     private final AuthUtil authUtil;
 
@@ -73,5 +79,11 @@ public class DolbomApi {
     public Response<?> apply(@RequestParam Long dolbomId) {
         dolbomService.apply(dolbomId);
         return Response.SUCCESS;
+    }
+
+    @GetMapping("/{dolbomId}/review")
+    public Response<DolbomReviewRes> getReviewByDolbomId(@PathVariable Long dolbomId) throws Throwable {
+        DolbomReview fetch = dolbomReviewService.getReviewByDolbomId(dolbomId);
+        return new Response<>(DolbomReviewRes.from(fetch));
     }
 }
