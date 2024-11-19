@@ -6,7 +6,13 @@ public enum DolbomCategory implements BaseEnum {
     SW("sw", "소프트웨어"),
     MATH("math", "수학"),
     EXPERIENCE("experience", "체험"),
-    ENGLISH("english", "영어");
+    ENGLISH("english", "영어"),
+    PICTURE_BOOK("picture_book", "그림책"),
+    PLAY("play", "놀이"),
+    PSYCHOLOGY("psychology", "심리"),
+    LANGUAGE("language", "언어"),
+    ART("art", "미술"),
+    HISTORY("history", "한국사");
 
     private final String name;
 
