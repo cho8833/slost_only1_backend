@@ -4,17 +4,9 @@ import com.querydsl.core.annotations.QueryProjection;
 import com.slost_only1.slost_only1.model.DolbomReview;
 import lombok.Getter;
 
-@Getter
-public class DolbomReviewRes {
-    private final Long id;
-    private final String content;
-    private final Long star;
-
+public record DolbomReviewRes(Long id, String content, Long star) {
     @QueryProjection
-    public DolbomReviewRes(Long id, String content, Long star) {
-        this.id = id;
-        this.content = content;
-        this.star = star;
+    public DolbomReviewRes {
     }
 
     public static DolbomReviewRes from(DolbomReview review) {

@@ -21,6 +21,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/dolbom")
@@ -82,8 +83,12 @@ public class DolbomApi {
     }
 
     @GetMapping("/{dolbomId}/review")
-    public Response<DolbomReviewRes> getReviewByDolbomId(@PathVariable Long dolbomId) throws Throwable {
-        DolbomReview fetch = dolbomReviewService.getReviewByDolbomId(dolbomId);
-        return new Response<>(DolbomReviewRes.from(fetch));
+    public Response<?> getReviewByDolbomId(@PathVariable Long dolbomId) throws Throwable {
+        Optional<DolbomReview> fetch = dolbomReviewService.getReviewByDolbomId(dolbomId);
+        if (fetch.isEmpty()) {
+            return Response.SUCCESS;
+        } else {
+            return new Response<>(DolbomReviewRes.from(fetch.get()));
+        }
     }
 }
