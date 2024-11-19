@@ -35,7 +35,7 @@ public class TeacherProfileRepositoryCustomImpl implements TeacherProfileReposit
     }
 
     @Override
-    public Page<TeacherProfile> findBySigungu(String sigungu, Pageable pageable) {
+    public Page<TeacherProfile> findBySigunguAndSido(String sigungu, String sido, Pageable pageable) {
         List<TeacherProfile> fetch = queryFactory.selectFrom(qTeacherProfile)
                 .where(BooleanExpressionUtil.eq(qAvailableArea.sigungu, sigungu),
                         BooleanExpressionUtil.eq(qTeacherProfile.status, TeacherProfileStatus.APPROVED))

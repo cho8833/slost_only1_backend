@@ -9,5 +9,5 @@ import java.util.List;
 public interface TeacherProfileRepositoryCustom {
     List<TeacherProfile> findByDolbomId(Long id);
 
-    Page<TeacherProfile> findBySigungu(String sigungu, Pageable pageable);
+    Page<TeacherProfile> findBySigunguAndSido(String sigungu, String sido, Pageable pageable);
 }

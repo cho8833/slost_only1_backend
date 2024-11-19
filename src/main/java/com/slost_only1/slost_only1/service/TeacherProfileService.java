@@ -1,6 +1,7 @@
 package com.slost_only1.slost_only1.service;
 
 
+import com.slost_only1.slost_only1.data.AreaReq;
 import com.slost_only1.slost_only1.data.TeacherProfileRes;
 import com.slost_only1.slost_only1.data.req.TeacherProfileCreateReq;
 import com.slost_only1.slost_only1.model.AvailableArea;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface TeacherProfileService {
     List<TeacherProfile> getDolbomPendingTeacher(Long dolbomId);
 
-    Page<TeacherProfile> getNearTeacher(String sigungu, Pageable pageable);
+    Page<TeacherProfile> getNearTeacher(AreaReq req, Pageable pageable);
 
     List<AvailableArea> getAvailableArea(Long teacherProfileId);
 

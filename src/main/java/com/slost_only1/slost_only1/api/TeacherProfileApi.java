@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.slost_only1.slost_only1.config.exception.CustomException;
 import com.slost_only1.slost_only1.config.response.Response;
 import com.slost_only1.slost_only1.config.response.ResponseCode;
+import com.slost_only1.slost_only1.data.AreaReq;
 import com.slost_only1.slost_only1.data.AvailableAreaRes;
 import com.slost_only1.slost_only1.data.TeacherProfileRes;
 import com.slost_only1.slost_only1.data.req.TeacherProfileCreateReq;
@@ -45,8 +46,8 @@ public class TeacherProfileApi {
 
     @GetMapping("/near")
     public Response<Page<TeacherProfileRes>> getNearTeacher(@PageableDefault Pageable pageable,
-                                                            @RequestParam(required = false) String sigungu) {
-        Page<TeacherProfile> fetch = service.getNearTeacher(sigungu, pageable);
+                                                            @ModelAttribute AreaReq req) {
+        Page<TeacherProfile> fetch = service.getNearTeacher(req, pageable);
         Page<TeacherProfileRes> result = fetch.map(TeacherProfileRes::from);
 
         return new Response<>(result);

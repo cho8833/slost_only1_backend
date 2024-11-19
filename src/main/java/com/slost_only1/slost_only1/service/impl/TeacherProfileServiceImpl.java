@@ -1,5 +1,6 @@
 package com.slost_only1.slost_only1.service.impl;
 
+import com.slost_only1.slost_only1.data.AreaReq;
 import com.slost_only1.slost_only1.data.TeacherProfileRes;
 import com.slost_only1.slost_only1.data.req.TeacherProfileCreateReq;
 import com.slost_only1.slost_only1.enums.TeacherProfileStatus;
@@ -41,8 +42,8 @@ public class TeacherProfileServiceImpl implements TeacherProfileService {
     }
 
     @Override
-    public Page<TeacherProfile> getNearTeacher(String bname, Pageable pageable) {
-        return teacherProfileRepository.findBySigungu(bname, pageable);
+    public Page<TeacherProfile> getNearTeacher(AreaReq req, Pageable pageable) {
+        return teacherProfileRepository.findBySigunguAndSido(req.sigungu(), req.sido(), pageable);
     }
 
     @Override
