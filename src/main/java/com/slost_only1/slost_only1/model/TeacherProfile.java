@@ -42,6 +42,12 @@ public class TeacherProfile extends BaseEntity {
     @Column
     private TeacherProfileStatus status;
 
+    @Column
+    private String introduce;
+
+    @Column
+    private String howBecameTeacher;
+
     @ManyToOne
     private Member member;
 }

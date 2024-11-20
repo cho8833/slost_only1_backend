@@ -7,7 +7,7 @@ import com.slost_only1.slost_only1.model.TeacherProfile;
 import java.time.LocalDate;
 
 public record TeacherProfileRes(Long id, String name, Gender gender, String profileImageUrl, LocalDate birthday,
-                                String profileName) {
+                                String profileName, String introduce, String howBecameTeacher) {
 
     @QueryProjection
     public TeacherProfileRes {
@@ -19,6 +19,9 @@ public record TeacherProfileRes(Long id, String name, Gender gender, String prof
                 teacher.getGender(),
                 teacher.getProfileImageUrl(),
                 teacher.getBirthday(),
-                teacher.getProfileName());
+                teacher.getProfileName(),
+                teacher.getIntroduce(),
+                teacher.getHowBecameTeacher()
+                );
     }
 }

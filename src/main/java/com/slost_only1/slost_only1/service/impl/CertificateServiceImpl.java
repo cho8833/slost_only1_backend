@@ -3,9 +3,11 @@ package com.slost_only1.slost_only1.service.impl;
 import com.slost_only1.slost_only1.data.req.CertificateCreateReq;
 import com.slost_only1.slost_only1.model.Certificate;
 import com.slost_only1.slost_only1.model.Member;
+import com.slost_only1.slost_only1.model.TeacherProfile;
 import com.slost_only1.slost_only1.repository.CertificateRepository;
 import com.slost_only1.slost_only1.repository.TeacherProfileRepository;
 import com.slost_only1.slost_only1.service.CertificateService;
+import com.slost_only1.slost_only1.service.MyTeacherProfileService;
 import com.slost_only1.slost_only1.util.AuthUtil;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -18,18 +20,18 @@ import java.util.List;
 public class CertificateServiceImpl implements CertificateService {
     private final CertificateRepository repository;
     private final AuthUtil authUtil;
-    private final TeacherProfileRepository teacherProfileRepository;
-    private final EntityManager entityManager;
+    private final MyTeacherProfileService myTeacherProfileService;
 
     @Override
     public List<Certificate> getMyCertificates() {
-        return repository.findByMemberId(authUtil.getLoginMemberId());
+        TeacherProfile teacherProfile = myTeacherProfileService.getMyTeacherProfile();
+        return repository.findByTeacherProfileId(teacherProfile.getId());
     }
 
     @Override
     public Certificate createCertificate(CertificateCreateReq req) {
-        Member member = entityManager.getReference(Member.class, authUtil.getLoginMemberId());
-        Certificate certificate = Certificate.of(req, member);
+        TeacherProfile teacherProfile = myTeacherProfileService.getMyTeacherProfile();
+        Certificate certificate = Certificate.of(req, teacherProfile);
 
         repository.save(certificate);
 

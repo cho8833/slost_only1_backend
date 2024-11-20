@@ -11,7 +11,7 @@ public enum ResponseCode {
     UNAUTHORIZED(401, "unauthorized", "인증키 필요"),
     WRONG_REQUEST(400, "wrong request", "잘못된 요청입니다"),
     NO_USER_FOUND(401, "No user found", "아이디 혹은 비밀번호가 잘못되었습니다"),
-    DUPLICATE_USERNAME(400, "Duplicate username", "이미 존재하는 아이디입니다"),
+    DUPLICATE_USER(400, "Duplicate user", "이미 존재하는 회원입니다"),
     // 권한 없음
     FORBIDDEN(403,  "Forbidden", "권한 없음"),
 

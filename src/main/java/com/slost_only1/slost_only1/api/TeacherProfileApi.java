@@ -9,7 +9,9 @@ import com.slost_only1.slost_only1.data.AreaReq;
 import com.slost_only1.slost_only1.data.AvailableAreaRes;
 import com.slost_only1.slost_only1.data.TeacherProfileRes;
 import com.slost_only1.slost_only1.data.req.TeacherProfileCreateReq;
+import com.slost_only1.slost_only1.data.req.TeacherProfileEditReq;
 import com.slost_only1.slost_only1.model.TeacherProfile;
+import com.slost_only1.slost_only1.service.MyTeacherProfileService;
 import com.slost_only1.slost_only1.service.TeacherProfileService;
 import com.slost_only1.slost_only1.util.AuthUtil;
 import lombok.RequiredArgsConstructor;
@@ -29,20 +31,22 @@ public class TeacherProfileApi {
 
     private final TeacherProfileService service;
 
+    private final MyTeacherProfileService myTeacherProfileService;
+
     private final AuthUtil authUtil;
 
-    @PostMapping
-    public Response<TeacherProfileRes> createTeacherProfile(@RequestPart("profile") String req, @RequestPart("profileImg") MultipartFile profileImg) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        TeacherProfileCreateReq profile;
-        try {
-            profile = objectMapper.readValue(req, TeacherProfileCreateReq.class);
-            return new Response<>(service.createProfile(profile, profileImg));
-        } catch (Exception e) {
-            throw new CustomException(ResponseCode.WRONG_REQUEST);
-        }
-    }
+//    @PostMapping
+//    public Response<TeacherProfileRes> createTeacherProfile(@RequestPart("profile") String req, @RequestPart("profileImg") MultipartFile profileImg) {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.registerModule(new JavaTimeModule());
+//        TeacherProfileCreateReq profile;
+//        try {
+//            profile = objectMapper.readValue(req, TeacherProfileCreateReq.class);
+//            return new Response<>(service.createProfile(profile, profileImg));
+//        } catch (Exception e) {
+//            throw new CustomException(ResponseCode.WRONG_REQUEST);
+//        }
+//    }
 
     @GetMapping("/near")
     public Response<Page<TeacherProfileRes>> getNearTeacher(@PageableDefault Pageable pageable,
@@ -62,18 +66,18 @@ public class TeacherProfileApi {
 
     @GetMapping("/me")
     public Response<TeacherProfileRes> getMyTeacherProfile() {
-        try {
-            return new Response<>(TeacherProfileRes.from(
-                    service.getTeacherProfileById(authUtil.getLoginMemberId()))
-            );
-        } catch (NoSuchElementException e) {
-            throw new CustomException(ResponseCode.DATA_NOT_FOUND);
-        }
+        return new Response<>(TeacherProfileRes.from(myTeacherProfileService.getMyTeacherProfile()));
+
     }
 
     @GetMapping("/{id}")
     public Response<TeacherProfileRes> getTeacherProfileById(@PathVariable Long id) {
         return new Response<>(TeacherProfileRes.from(service.getTeacherProfileById(id)));
+    }
+
+    @PatchMapping("/{id}")
+    public Response<TeacherProfileRes> editTeacherProfile(@PathVariable Long id, @RequestBody TeacherProfileEditReq req) {
+        return new Response<>(TeacherProfileRes.from(service.editTeacherProfile(id, req)));
     }
 
     @GetMapping

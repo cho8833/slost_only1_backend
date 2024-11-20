@@ -23,10 +23,10 @@ public class Certificate extends BaseEntity {
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member member;
+    private TeacherProfile teacherProfile;
 
-    public static Certificate of(CertificateCreateReq req, Member member) {
-        return new Certificate(req.getTitle(), member);
+    public static Certificate of(CertificateCreateReq req, TeacherProfile teacherProfile) {
+        return new Certificate(req.getTitle(), teacherProfile);
     }
 
 }

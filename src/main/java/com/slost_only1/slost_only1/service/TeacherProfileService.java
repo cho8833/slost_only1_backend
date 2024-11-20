@@ -4,6 +4,7 @@ package com.slost_only1.slost_only1.service;
 import com.slost_only1.slost_only1.data.AreaReq;
 import com.slost_only1.slost_only1.data.TeacherProfileRes;
 import com.slost_only1.slost_only1.data.req.TeacherProfileCreateReq;
+import com.slost_only1.slost_only1.data.req.TeacherProfileEditReq;
 import com.slost_only1.slost_only1.model.AvailableArea;
 import com.slost_only1.slost_only1.model.TeacherProfile;
 import org.springframework.data.domain.Page;
@@ -19,9 +20,9 @@ public interface TeacherProfileService {
 
     List<AvailableArea> getAvailableArea(Long teacherProfileId);
 
-    TeacherProfileRes createProfile(TeacherProfileCreateReq req, MultipartFile profileImg);
-
     TeacherProfile getTeacherProfileById(Long id);
 
     Page<TeacherProfile> getTeacherProfile(Pageable pageable);
+
+    TeacherProfile editTeacherProfile(Long id, TeacherProfileEditReq req);
 }

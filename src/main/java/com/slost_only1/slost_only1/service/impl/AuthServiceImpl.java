@@ -5,35 +5,32 @@ import com.slost_only1.slost_only1.config.exception.CustomException;
 import com.slost_only1.slost_only1.config.response.ResponseCode;
 import com.slost_only1.slost_only1.data.*;
 import com.slost_only1.slost_only1.data.req.SignInReq;
-import com.slost_only1.slost_only1.data.req.SignUpReq;
+import com.slost_only1.slost_only1.enums.AuthProvider;
 import com.slost_only1.slost_only1.enums.MemberRole;
 import com.slost_only1.slost_only1.model.Member;
+import com.slost_only1.slost_only1.model.OAuth;
+import com.slost_only1.slost_only1.repository.KakaoAuthRepository;
 import com.slost_only1.slost_only1.repository.MemberRepository;
+import com.slost_only1.slost_only1.repository.OAuthRepository;
 import com.slost_only1.slost_only1.service.AuthService;
 import com.slost_only1.slost_only1.util.AuthUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
     private final MemberRepository memberRepository;
+
     private final AuthorizationTokenProvider tokenProvider;
     private final AuthUtil authUtil;
-
-    @Override
-    public AuthorizationTokenData signIn(SignInReq req) {
-        Member member = memberRepository.findByUsernameAndPassword(req.getUsername(), req.getPassword()).orElseThrow(() -> {
-           throw new CustomException(ResponseCode.NO_USER_FOUND);
-        });
-
-        AuthorizationTokenData tokenData = tokenProvider.generateAuthorizationTokenData(member);
-
-        return tokenData;
-    }
+    private final KakaoAuthRepository kakaoAuthRepository;
+    private final OAuthRepository oAuthRepository;
 
     @Override
     public AuthorizationTokenData testSignIn(MemberRole role) {
@@ -48,19 +45,37 @@ public class AuthServiceImpl implements AuthService {
         return tokenData;
     }
 
+    @Transactional
     @Override
-    public AuthorizationTokenData signUp(SignUpReq req) {
-        List<Member> check = memberRepository.findByUsername(req.getUsername());
+    public AuthorizationTokenData signInWithKakao(String phoneNumber, KakaoOAuthToken token, MemberRole role) {
 
-        if (!check.isEmpty()) {
-            throw new CustomException(ResponseCode.DUPLICATE_USERNAME);
+        KakaoUser kakaoUser = kakaoAuthRepository.getUserInfo(token.accessToken());
+
+        Optional<OAuth> oAuth = oAuthRepository.findByUserId(kakaoUser.id().toString());
+
+        Member member;
+        if (oAuth.isPresent()) {
+            member = memberRepository.findById(oAuth.get().getMember().getId()).orElseThrow();
+            return tokenProvider.generateAuthorizationTokenData(member);
+        } else {
+            // 같은 전화번호의 다른 Member 가 있는 경우 DUPLICATE USER Exception
+            if (memberRepository.findByPhoneNumber(phoneNumber).isPresent()) {
+                throw new CustomException(ResponseCode.DUPLICATE_USER);
+            }
+            member = signUp(phoneNumber, kakaoUser.id().toString(), AuthProvider.KAKAO, role);
         }
-        Member member = Member.of(req);
+        return tokenProvider.generateAuthorizationTokenData(member);
+    }
+
+    @Transactional
+    private Member signUp(String phoneNumber, String oAuthUserId, AuthProvider authProvider, MemberRole memberRole) {
+        Member member = new Member();
+        member.setRole(memberRole);
+        member.setPhoneNumber(phoneNumber);
         memberRepository.save(member);
-
-        AuthorizationTokenData tokenData = tokenProvider.generateAuthorizationTokenData(member);
-
-        return tokenData;
+        OAuth newOAuth = new OAuth(member, oAuthUserId, authProvider);
+        oAuthRepository.save(newOAuth);
+        return member;
     }
 
     @Override
@@ -74,9 +89,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public MemberRes me() {
-        Member member = memberRepository.findById(authUtil.getLoginMemberId()).orElseThrow(() -> {
-            throw new CustomException(ResponseCode.FORBIDDEN);
-        });
+        Member member = memberRepository.findById(authUtil.getLoginMemberId()).orElseThrow(() -> new CustomException(ResponseCode.FORBIDDEN));
 
         return MemberRes.of(member);
     }
