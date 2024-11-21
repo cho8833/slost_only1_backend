@@ -12,6 +12,7 @@ import com.slost_only1.slost_only1.model.OAuth;
 import com.slost_only1.slost_only1.repository.KakaoAuthRepository;
 import com.slost_only1.slost_only1.repository.MemberRepository;
 import com.slost_only1.slost_only1.repository.OAuthRepository;
+import com.slost_only1.slost_only1.repository.SendbirdRepository;
 import com.slost_only1.slost_only1.service.AuthService;
 import com.slost_only1.slost_only1.util.AuthUtil;
 import jakarta.transaction.Transactional;
@@ -26,11 +27,11 @@ import java.util.Optional;
 public class AuthServiceImpl implements AuthService {
 
     private final MemberRepository memberRepository;
-
     private final AuthorizationTokenProvider tokenProvider;
     private final AuthUtil authUtil;
     private final KakaoAuthRepository kakaoAuthRepository;
     private final OAuthRepository oAuthRepository;
+    private final SendbirdRepository sendbirdRepository;
 
     @Override
     public AuthorizationTokenData testSignIn(MemberRole role) {
@@ -72,9 +73,13 @@ public class AuthServiceImpl implements AuthService {
         Member member = new Member();
         member.setRole(memberRole);
         member.setPhoneNumber(phoneNumber);
+        SendbirdCreateUserRes res = sendbirdRepository.createUser(member);
+        member.setSendbirdAccessToken(res.access_token());
         memberRepository.save(member);
+
         OAuth newOAuth = new OAuth(member, oAuthUserId, authProvider);
         oAuthRepository.save(newOAuth);
+
         return member;
     }
 

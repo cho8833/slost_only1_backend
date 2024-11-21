@@ -17,15 +17,18 @@ public class MemberRes {
 
     private MemberRole role;
 
+    private String sendbirdAccessToken;
+
     @QueryProjection
-    public MemberRes(Long id, String phoneNumber, MemberRole role) {
+    public MemberRes(Long id, String phoneNumber, MemberRole role, String sendbirdAccessToken) {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.role = role;
+        this.sendbirdAccessToken = sendbirdAccessToken;
     }
 
     public static MemberRes of(Member member) {
-        return new MemberRes(member.getId(), member.getPhoneNumber(), member.getRole());
+        return new MemberRes(member.getId(), member.getPhoneNumber(), member.getRole(), member.getSendbirdAccessToken());
     }
 
 }

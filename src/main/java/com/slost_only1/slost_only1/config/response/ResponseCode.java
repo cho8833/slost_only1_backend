@@ -15,9 +15,9 @@ public enum ResponseCode {
     // 권한 없음
     FORBIDDEN(403,  "Forbidden", "권한 없음"),
 
-    //데이터 찾을수 없을 경우 사용
     DATA_NOT_FOUND(404,  "Data not found", "데이터를 찾을 수 없습니다"),
 
+    FAIL_UPLOAD_FILE(500, "failed to upload file", "파일 업로드에 실패했습니다"),
 
     // Kid
     NO_MORE_KID(550, "NO MORE KID", "아이는 최대 10명까지 추가 가능합니다");

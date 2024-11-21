@@ -1,9 +1,12 @@
 package com.slost_only1.slost_only1.service.impl;
 
+import com.slost_only1.slost_only1.config.exception.CustomException;
+import com.slost_only1.slost_only1.config.response.ResponseCode;
 import com.slost_only1.slost_only1.data.AreaReq;
 import com.slost_only1.slost_only1.data.req.TeacherProfileEditReq;
 import com.slost_only1.slost_only1.model.AvailableArea;
 import com.slost_only1.slost_only1.model.TeacherProfile;
+import com.slost_only1.slost_only1.repository.CloudFileRepository;
 import com.slost_only1.slost_only1.repository.AvailableAreaRepository;
 import com.slost_only1.slost_only1.repository.DolbomAppliedTeacherRepository;
 import com.slost_only1.slost_only1.repository.TeacherProfileRepository;
@@ -14,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -28,6 +33,8 @@ public class TeacherProfileServiceImpl implements TeacherProfileService {
     private final AvailableAreaRepository availableAreaRepository;
 
     private final EntityManager entityManager;
+
+    private final CloudFileRepository cloudFileRepository;
 
     private final AuthUtil authUtil;
 
@@ -70,5 +77,32 @@ public class TeacherProfileServiceImpl implements TeacherProfileService {
         teacherProfileRepository.save(teacherProfile);
 
         return teacherProfile;
+    }
+
+    @Override
+    public TeacherProfile editTeacherProfileImage(Long id, MultipartFile file) {
+        TeacherProfile teacherProfile = teacherProfileRepository.findById(id).orElseThrow();
+
+        // 이미지 업로드
+        String url;
+        try {
+            url = cloudFileRepository.saveFile(file);
+        } catch (Exception e) {
+            throw new CustomException(ResponseCode.FAIL_UPLOAD_FILE);
+        }
+
+        // 이미 프로필 이미지가 있다면 버킷에서 삭제
+        if (teacherProfile.getProfileImageUrl() != null) {
+            List<String> split = Arrays.stream(teacherProfile.getProfileImageUrl()
+                    .split("/")).toList();
+            String fileName = split.get(split.size()-1);
+            cloudFileRepository.deleteFile(fileName);
+        }
+
+        teacherProfile.setProfileImageUrl(url);
+        teacherProfileRepository.save(teacherProfile);
+
+        return teacherProfile;
+
     }
 }

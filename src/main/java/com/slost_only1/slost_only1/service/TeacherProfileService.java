@@ -25,4 +25,6 @@ public interface TeacherProfileService {
     Page<TeacherProfile> getTeacherProfile(Pageable pageable);
 
     TeacherProfile editTeacherProfile(Long id, TeacherProfileEditReq req);
+
+    TeacherProfile editTeacherProfileImage(Long id, MultipartFile file);
 }
