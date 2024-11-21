@@ -30,7 +30,7 @@ public class SendbirdRepositoryImpl implements SendbirdRepository {
         header.setContentType(MediaType.APPLICATION_JSON);
 
         SendbirdCreateUserReq reqBody = new SendbirdCreateUserReq(
-                member.getId().toString(), member.getId().toString(), "");
+                member.getId().toString(), member.getId().toString(), "", true);
 
         HttpEntity<SendbirdCreateUserReq> entity = new HttpEntity<>(reqBody, header);
 
@@ -47,7 +47,8 @@ public class SendbirdRepositoryImpl implements SendbirdRepository {
     private record SendbirdCreateUserReq(
             String user_id,
             String nickname,
-            String profile_url
+            String profile_url,
+            Boolean issue_access_token
     ) {
     }
 }

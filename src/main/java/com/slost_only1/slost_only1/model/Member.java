@@ -1,7 +1,6 @@
 package com.slost_only1.slost_only1.model;
 
 import com.slost_only1.slost_only1.base.BaseEntity;
-import com.slost_only1.slost_only1.data.req.SignUpReq;
 import com.slost_only1.slost_only1.enums.MemberRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
