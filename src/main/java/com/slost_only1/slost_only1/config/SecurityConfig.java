@@ -46,7 +46,7 @@ public class SecurityConfig {
                     authorize
                             .requestMatchers("/health").permitAll()
                             .requestMatchers("/event").permitAll()
-                            .requestMatchers("/auth/sign-in").permitAll()
+                            .requestMatchers("/auth/sign-in/**").permitAll()
                             .requestMatchers("/auth/sign-up").permitAll()
                             .requestMatchers("/dolbom").permitAll()
                             .anyRequest().authenticated();

@@ -13,7 +13,6 @@ import com.slost_only1.slost_only1.service.DolbomReviewService;
 import com.slost_only1.slost_only1.service.DolbomService;
 import com.slost_only1.slost_only1.service.TeacherProfileService;
 import com.slost_only1.slost_only1.util.AuthUtil;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +37,6 @@ public class DolbomApi {
 
     @PostMapping
     public Response<?> postDolbom(@RequestBody DolbomPostReq req) {
-        System.out.println(req);
         dolbomService.postDolbom(req);
 
         return Response.SUCCESS;

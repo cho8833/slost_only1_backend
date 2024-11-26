@@ -55,7 +55,7 @@ public class AuthServiceImpl implements AuthService {
         if (role == MemberRole.PARENT) {
             id = 3L;
         } else {
-            id = 1L;
+            id = 4L;
         }
         Member member = memberRepository.findById(id).orElseThrow();
         AuthorizationTokenData tokenData = tokenProvider.generateAuthorizationTokenData(member);

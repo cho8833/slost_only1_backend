@@ -49,6 +49,16 @@ public class TeacherProfileApi {
         return new Response<>(TeacherProfileRes.from(myTeacherProfileService.getMyTeacherProfile()));
     }
 
+    @GetMapping("/me/review")
+    public Response<Page<DolbomReviewRes>> getMyReviews(@PageableDefault Pageable pageable) {
+        TeacherProfile myProfile = myTeacherProfileService.getMyTeacherProfile();
+        Page<DolbomReview> reviews = service.getTeacherReview(pageable, myProfile.getId());
+
+        Page<DolbomReviewRes> res = reviews.map(DolbomReviewRes::from);
+
+        return new Response<>(res);
+    }
+
     @GetMapping("/{id}")
     public Response<TeacherProfileRes> getTeacherProfileById(@PathVariable Long id) {
         return new Response<>(TeacherProfileRes.from(service.getTeacherProfileById(id)));
