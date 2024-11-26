@@ -6,6 +6,7 @@ import com.slost_only1.slost_only1.data.TeacherProfileRes;
 import com.slost_only1.slost_only1.data.req.TeacherProfileCreateReq;
 import com.slost_only1.slost_only1.data.req.TeacherProfileEditReq;
 import com.slost_only1.slost_only1.model.AvailableArea;
+import com.slost_only1.slost_only1.model.DolbomReview;
 import com.slost_only1.slost_only1.model.TeacherProfile;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,4 +28,6 @@ public interface TeacherProfileService {
     TeacherProfile editTeacherProfile(Long id, TeacherProfileEditReq req);
 
     TeacherProfile editTeacherProfileImage(Long id, MultipartFile file);
+
+    Page<DolbomReview> getTeacherReview(Pageable pageable, Long teacherId);
 }

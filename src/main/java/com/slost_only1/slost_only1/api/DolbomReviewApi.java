@@ -3,6 +3,7 @@ package com.slost_only1.slost_only1.api;
 import com.slost_only1.slost_only1.config.response.Response;
 import com.slost_only1.slost_only1.data.DolbomReviewRes;
 import com.slost_only1.slost_only1.data.req.DolbomReviewCreateReq;
+import com.slost_only1.slost_only1.data.req.ReviewReportReq;
 import com.slost_only1.slost_only1.model.DolbomReview;
 import com.slost_only1.slost_only1.service.DolbomReviewService;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,11 @@ public class DolbomReviewApi {
         DolbomReview result =  dolbomReviewService.create(req);
 
         return new Response<>(DolbomReviewRes.from(result));
+    }
+
+    @PostMapping("/report")
+    public Response<?> report(@RequestBody ReviewReportReq req) {
+        dolbomReviewService.report(req);
+        return Response.SUCCESS;
     }
 }

@@ -3,8 +3,10 @@ package com.slost_only1.slost_only1.api;
 import com.slost_only1.slost_only1.config.response.Response;
 import com.slost_only1.slost_only1.data.AreaReq;
 import com.slost_only1.slost_only1.data.AvailableAreaRes;
+import com.slost_only1.slost_only1.data.DolbomReviewRes;
 import com.slost_only1.slost_only1.data.TeacherProfileRes;
 import com.slost_only1.slost_only1.data.req.TeacherProfileEditReq;
+import com.slost_only1.slost_only1.model.DolbomReview;
 import com.slost_only1.slost_only1.model.TeacherProfile;
 import com.slost_only1.slost_only1.service.MyTeacherProfileService;
 import com.slost_only1.slost_only1.service.TeacherProfileService;
@@ -45,7 +47,6 @@ public class TeacherProfileApi {
     @GetMapping("/me")
     public Response<TeacherProfileRes> getMyTeacherProfile() {
         return new Response<>(TeacherProfileRes.from(myTeacherProfileService.getMyTeacherProfile()));
-
     }
 
     @GetMapping("/{id}")
@@ -68,5 +69,12 @@ public class TeacherProfileApi {
         Page<TeacherProfile> fetch = service.getTeacherProfile(pageable);
         Page<TeacherProfileRes> result = fetch.map(TeacherProfileRes::from);
         return new Response<>(result);
+    }
+
+    @GetMapping("/{id}/review")
+    public Response<Page<DolbomReviewRes>> getTeacherReview(@PageableDefault Pageable pageable, @PathVariable Long id) {
+        Page<DolbomReview> reviews = service.getTeacherReview(pageable, id);
+        Page<DolbomReviewRes> res = reviews.map(DolbomReviewRes::from);
+        return new Response<>(res);
     }
 }

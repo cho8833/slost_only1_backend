@@ -1,6 +1,7 @@
 package com.slost_only1.slost_only1.service.impl;
 
 import com.slost_only1.slost_only1.data.req.DolbomReviewCreateReq;
+import com.slost_only1.slost_only1.data.req.ReviewReportReq;
 import com.slost_only1.slost_only1.model.Dolbom;
 import com.slost_only1.slost_only1.model.DolbomReview;
 import com.slost_only1.slost_only1.model.Member;
@@ -34,9 +35,24 @@ public class DolbomReviewServiceImpl implements DolbomReviewService {
         Member member = entityManager.getReference(Member.class, authUtil.getLoginMemberId());
         Dolbom dolbom = entityManager.getReference(Dolbom.class, req.dolbomId());
 
-        DolbomReview dolbomReview = new DolbomReview(dolbom, req.content(), req.star(), member);
+        DolbomReview dolbomReview = new DolbomReview(dolbom,
+                req.content(),
+                req.star(),
+                member,
+                dolbom.getTeacherProfile(),
+                null, null);
         repository.save(dolbomReview);
 
         return dolbomReview;
+    }
+
+    @Override
+    public void report(ReviewReportReq req) {
+        DolbomReview review = repository.findById(req.reviewId()).orElseThrow();
+
+        review.setReportContent(req.reportContent());
+        review.setReportReason(req.reportReason());
+
+        repository.save(review);
     }
 }
