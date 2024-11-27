@@ -50,8 +50,8 @@ public class DolbomReviewServiceImpl implements DolbomReviewService {
     public void report(ReviewReportReq req) {
         DolbomReview review = repository.findById(req.reviewId()).orElseThrow();
 
-        review.setReportContent(req.reportContent());
-        review.setReportReason(req.reportReason());
+        review.setReportContent(req.content());
+        review.setReportReason(req.reason());
 
         repository.save(review);
     }

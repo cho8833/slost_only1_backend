@@ -5,13 +5,8 @@ import com.slost_only1.slost_only1.data.DolbomReviewRes;
 import com.slost_only1.slost_only1.data.req.DolbomReviewCreateReq;
 import com.slost_only1.slost_only1.data.req.ReviewReportReq;
 import com.slost_only1.slost_only1.model.DolbomReview;
-import com.slost_only1.slost_only1.model.TeacherProfile;
 import com.slost_only1.slost_only1.service.DolbomReviewService;
-import com.slost_only1.slost_only1.service.MyTeacherProfileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

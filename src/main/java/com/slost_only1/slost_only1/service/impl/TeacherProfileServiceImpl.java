@@ -10,7 +10,6 @@ import com.slost_only1.slost_only1.model.TeacherProfile;
 import com.slost_only1.slost_only1.repository.*;
 import com.slost_only1.slost_only1.service.TeacherProfileService;
 import com.slost_only1.slost_only1.util.AuthUtil;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -103,8 +102,12 @@ public class TeacherProfileServiceImpl implements TeacherProfileService {
     }
 
     @Override
-    public Page<DolbomReview> getTeacherReview(Pageable pageable, Long teacherId) {
-        // 신고되지 않은 리뷰만 가져옴
-        return dolbomReviewRepository.findByTeacherProfileIdAndReportReason(teacherId, null, pageable);
+    public Page<DolbomReview> getTeacherReview(Pageable pageable, Long teacherId, boolean includeReported) {
+        if (includeReported) {
+            return dolbomReviewRepository.findByTeacherProfile_Id(teacherId, pageable);
+        } else {
+            // 신고되지 않은 리뷰만 가져옴
+            return dolbomReviewRepository.findByTeacherProfile_IdAndReportReasonNull(teacherId, pageable);
+        }
     }
 }

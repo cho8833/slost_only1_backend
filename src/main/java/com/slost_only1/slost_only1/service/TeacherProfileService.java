@@ -2,8 +2,6 @@ package com.slost_only1.slost_only1.service;
 
 
 import com.slost_only1.slost_only1.data.AreaReq;
-import com.slost_only1.slost_only1.data.TeacherProfileRes;
-import com.slost_only1.slost_only1.data.req.TeacherProfileCreateReq;
 import com.slost_only1.slost_only1.data.req.TeacherProfileEditReq;
 import com.slost_only1.slost_only1.model.AvailableArea;
 import com.slost_only1.slost_only1.model.DolbomReview;
@@ -29,5 +27,5 @@ public interface TeacherProfileService {
 
     TeacherProfile editTeacherProfileImage(Long id, MultipartFile file);
 
-    Page<DolbomReview> getTeacherReview(Pageable pageable, Long teacherId);
+    Page<DolbomReview> getTeacherReview(Pageable pageable, Long teacherId, boolean includeReported);
 }
