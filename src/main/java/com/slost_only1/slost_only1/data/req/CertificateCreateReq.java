@@ -1,10 +1,8 @@
 package com.slost_only1.slost_only1.data.req;
 
-import lombok.Getter;
+import org.springframework.web.multipart.MultipartFile;
 
-@Getter
-public class CertificateCreateReq {
-    String title;
-
-
+public record CertificateCreateReq(
+        String title,
+        MultipartFile pdf) {
 }

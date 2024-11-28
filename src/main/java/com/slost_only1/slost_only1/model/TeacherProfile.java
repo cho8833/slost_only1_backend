@@ -2,10 +2,11 @@ package com.slost_only1.slost_only1.model;
 
 
 import com.slost_only1.slost_only1.base.BaseEntity;
-import com.slost_only1.slost_only1.data.req.TeacherProfileCreateReq;
 import com.slost_only1.slost_only1.enums.Gender;
 import com.slost_only1.slost_only1.enums.TeacherProfileStatus;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,7 @@ public class TeacherProfile extends BaseEntity {
     @Column
     private String profileName;
 
-    @Column
+    @Column(length = 1024)
     private String profileImageUrl;
 
     @Column

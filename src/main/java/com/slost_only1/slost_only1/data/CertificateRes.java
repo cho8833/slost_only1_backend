@@ -4,7 +4,7 @@ package com.slost_only1.slost_only1.data;
 import com.querydsl.core.annotations.QueryProjection;
 import com.slost_only1.slost_only1.model.Certificate;
 
-public record CertificateRes(Long id, String title) {
+public record CertificateRes(Long id, String title, String fileUrl) {
 
     @QueryProjection
     public CertificateRes {
@@ -12,6 +12,6 @@ public record CertificateRes(Long id, String title) {
     }
 
     public static CertificateRes from(Certificate certificate) {
-        return new CertificateRes(certificate.getId(), certificate.getTitle());
+        return new CertificateRes(certificate.getId(), certificate.getTitle(), certificate.getFileUrl());
     }
 }
