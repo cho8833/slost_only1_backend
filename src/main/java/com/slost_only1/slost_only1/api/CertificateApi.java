@@ -27,13 +27,13 @@ public class CertificateApi {
     }
 
     @PutMapping
-    public Response<CertificateRes> createCertificate(@RequestPart("pdf") MultipartFile pdf, @RequestPart String title) throws IOException {
+    public Response<CertificateRes> createCertificate(@RequestPart(value = "pdf", required = false) MultipartFile pdf, @RequestPart String title) throws IOException {
         CertificateCreateReq req = new CertificateCreateReq(title, pdf);
         return new Response<>(CertificateRes.from(service.createCertificate(req)));
     }
 
     @PostMapping("/{id}")
-    public Response<CertificateRes> editCertificate(@PathVariable Long id, @RequestPart("pdf") MultipartFile pdf, @RequestPart String title) throws IOException {
+    public Response<CertificateRes> editCertificate(@PathVariable Long id, @RequestPart(value = "pdf", required = false) MultipartFile pdf, @RequestPart String title) throws IOException {
         CertificateCreateReq req = new CertificateCreateReq(title, pdf);
         return new Response<>(CertificateRes.from(service.editCertificate(id, req)));
     }

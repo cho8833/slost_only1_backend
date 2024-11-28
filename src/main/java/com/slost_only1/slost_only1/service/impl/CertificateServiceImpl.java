@@ -33,10 +33,14 @@ public class CertificateServiceImpl implements CertificateService {
     public Certificate createCertificate(CertificateCreateReq req) throws IOException {
         TeacherProfile teacherProfile = myTeacherProfileService.getMyTeacherProfile();
 
-        // pdf 업로드
-        String url = cloudFileRepository.saveFile(req.pdf());
+        String fileUrl = null;
+        // 파일 업로드는 선택사항
+        if (req.pdf() != null) {
+            // pdf 업로드
+            fileUrl = cloudFileRepository.saveFile(req.pdf());
+        }
 
-        Certificate certificate = new Certificate(req.title(), url, teacherProfile);
+        Certificate certificate = new Certificate(req.title(), fileUrl, teacherProfile);
 
         repository.save(certificate);
 
@@ -47,18 +51,21 @@ public class CertificateServiceImpl implements CertificateService {
     public Certificate editCertificate(Long id, CertificateCreateReq req) throws IOException {
         Certificate certificate = repository.findById(id).orElseThrow();
 
-        // 이미 업로드되어 있는 pdf 삭제
-        if (certificate.getFileUrl() != null) {
-            List<String> split = Arrays.stream(certificate.getFileUrl()
-                    .split("/")).toList();
-            String fileName = split.get(split.size()-1);
-            cloudFileRepository.deleteFile(fileName);
+        // 자격증 수정 하지 않을 시
+        if (req.pdf() != null) {
+            // 이미 업로드되어 있는 pdf 삭제
+            if (certificate.getFileUrl() != null) {
+                List<String> split = Arrays.stream(certificate.getFileUrl()
+                        .split("/")).toList();
+                String fileName = split.get(split.size()-1);
+                cloudFileRepository.deleteFile(fileName);
+            }
+            String newUrl = cloudFileRepository.saveFile(req.pdf());
+
+            certificate.setFileUrl(newUrl);
         }
 
-        String newUrl = cloudFileRepository.saveFile(req.pdf());
-
         certificate.setTitle(req.title());
-        certificate.setFileUrl(newUrl);
 
         repository.save(certificate);
 
