@@ -7,6 +7,7 @@ import com.slost_only1.slost_only1.data.req.DolbomPostReq;
 import com.slost_only1.slost_only1.enums.DolbomStatus;
 import com.slost_only1.slost_only1.model.*;
 import com.slost_only1.slost_only1.repository.*;
+import com.slost_only1.slost_only1.service.ChatService;
 import com.slost_only1.slost_only1.service.DolbomService;
 import com.slost_only1.slost_only1.util.AuthUtil;
 import jakarta.persistence.EntityManager;
@@ -35,6 +36,8 @@ public class DolbomServiceImpl implements DolbomService {
     private final DolbomAppliedTeacherRepository dolbomAppliedTeacherRepository;
 
     private final TeacherProfileRepository teacherProfileRepository;
+
+    private final ChatService chatService;
 
     private final EntityManager entityManager;
 
@@ -108,6 +111,7 @@ public class DolbomServiceImpl implements DolbomService {
     }
 
     @Override
+    @Transactional
     public void apply(Long dolbomId) {
         Long teacherId = authUtil.getLoginMemberId();
         Optional<TeacherProfile> teacherProfile = teacherProfileRepository.findByMemberId(teacherId);
@@ -123,5 +127,7 @@ public class DolbomServiceImpl implements DolbomService {
                 teacherProfile.get()
         );
         dolbomAppliedTeacherRepository.save(dolbomAppliedTeacher);
+
+        chatService.askDolbom(dolbomId);
     }
 }

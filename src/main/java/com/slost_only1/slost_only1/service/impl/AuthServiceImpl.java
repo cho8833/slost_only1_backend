@@ -4,6 +4,7 @@ import com.slost_only1.slost_only1.auth.AuthorizationTokenProvider;
 import com.slost_only1.slost_only1.config.exception.CustomException;
 import com.slost_only1.slost_only1.config.response.ResponseCode;
 import com.slost_only1.slost_only1.data.*;
+import com.slost_only1.slost_only1.data.req.SendbirdCreateUserReq;
 import com.slost_only1.slost_only1.enums.AuthProvider;
 import com.slost_only1.slost_only1.enums.MemberRole;
 import com.slost_only1.slost_only1.model.Member;
@@ -83,7 +84,10 @@ public class AuthServiceImpl implements AuthService {
         member.setPhoneNumber(phoneNumber);
         memberRepository.save(member);
 
-        SendbirdCreateUserRes res = sendbirdRepository.createUser(member);
+        // create Sendbird User
+        SendbirdCreateUserReq req = new SendbirdCreateUserReq(
+                member.getId().toString(), member.getId().toString(), "", true);
+        SendbirdCreateUserRes res = sendbirdRepository.createUser(req);
         member.setSendbirdAccessToken(res.access_token());
 
         OAuth newOAuth = new OAuth(member, oAuthUserId, authProvider);

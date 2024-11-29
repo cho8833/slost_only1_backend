@@ -2,7 +2,7 @@ package com.slost_only1.slost_only1.service.impl;
 
 import com.slost_only1.slost_only1.config.exception.CustomException;
 import com.slost_only1.slost_only1.config.response.ResponseCode;
-import com.slost_only1.slost_only1.data.AreaReq;
+import com.slost_only1.slost_only1.data.req.AreaReq;
 import com.slost_only1.slost_only1.data.req.TeacherProfileEditReq;
 import com.slost_only1.slost_only1.model.AvailableArea;
 import com.slost_only1.slost_only1.model.DolbomReview;

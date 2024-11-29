@@ -1,7 +1,7 @@
 package com.slost_only1.slost_only1.api;
 
 import com.slost_only1.slost_only1.config.response.Response;
-import com.slost_only1.slost_only1.data.AreaReq;
+import com.slost_only1.slost_only1.data.req.AreaReq;
 import com.slost_only1.slost_only1.data.AvailableAreaRes;
 import com.slost_only1.slost_only1.data.DolbomReviewRes;
 import com.slost_only1.slost_only1.data.TeacherProfileRes;
