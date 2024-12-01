@@ -51,4 +51,8 @@ public class TeacherProfile extends BaseEntity {
 
     @ManyToOne
     private Member member;
+
+    public TeacherProfile(Member member) {
+        this.member = member;
+    }
 }

@@ -9,10 +9,8 @@ import com.slost_only1.slost_only1.enums.AuthProvider;
 import com.slost_only1.slost_only1.enums.MemberRole;
 import com.slost_only1.slost_only1.model.Member;
 import com.slost_only1.slost_only1.model.OAuth;
-import com.slost_only1.slost_only1.repository.KakaoAuthRepository;
-import com.slost_only1.slost_only1.repository.MemberRepository;
-import com.slost_only1.slost_only1.repository.OAuthRepository;
-import com.slost_only1.slost_only1.repository.SendbirdRepository;
+import com.slost_only1.slost_only1.model.TeacherProfile;
+import com.slost_only1.slost_only1.repository.*;
 import com.slost_only1.slost_only1.service.AuthService;
 import com.slost_only1.slost_only1.util.AuthUtil;
 import jakarta.transaction.Transactional;
@@ -30,7 +28,8 @@ public class AuthServiceImpl implements AuthService {
     private final AuthUtil authUtil;
     private final KakaoAuthRepository kakaoAuthRepository;
     private final OAuthRepository oAuthRepository;
-    private final SendbirdRepository sendbirdRepository;
+    private final ChatServiceSendbird chatService;
+    private final TeacherProfileRepository teacherProfileRepository;
 
     @Override
     public AuthorizationTokenData signInWithKakao(MemberRole role, KakaoOAuthToken token) {
@@ -84,14 +83,16 @@ public class AuthServiceImpl implements AuthService {
         member.setPhoneNumber(phoneNumber);
         memberRepository.save(member);
 
-        // create Sendbird User
-        SendbirdCreateUserReq req = new SendbirdCreateUserReq(
-                member.getId().toString(), member.getId().toString(), "", true);
-        SendbirdCreateUserRes res = sendbirdRepository.createUser(req);
-        member.setSendbirdAccessToken(res.access_token());
+        if (memberRole == MemberRole.TEACHER) {
+            TeacherProfile teacherProfile = new TeacherProfile(member);
+            teacherProfileRepository.save(teacherProfile);
+        }
 
         OAuth newOAuth = new OAuth(member, oAuthUserId, authProvider);
         oAuthRepository.save(newOAuth);
+
+        // create Sendbird User
+        chatService.createUser(member.getId(), member.getRole());
 
         return member;
     }
