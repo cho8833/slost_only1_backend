@@ -2,12 +2,9 @@ package com.slost_only1.slost_only1.model;
 
 
 import com.slost_only1.slost_only1.base.BaseEntity;
-import com.slost_only1.slost_only1.config.exception.CustomException;
 import com.slost_only1.slost_only1.enums.Gender;
 import com.slost_only1.slost_only1.enums.TeacherProfileStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +13,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -53,11 +51,19 @@ public class TeacherProfile extends BaseEntity {
     @ManyToOne
     private Member member;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name="teacher_profile_id")
+    private List<AvailableAge> availableAges;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name="teacher_profile_id")
+    private List<AvailableCategory> availableCategories;
+
     public TeacherProfile(Member member) {
         this.member = member;
     }
 
     public Boolean isApproved() {
-        return status.equals(TeacherProfileStatus.APPROVED);
+        return TeacherProfileStatus.APPROVED.equals(this.status);
     }
 }

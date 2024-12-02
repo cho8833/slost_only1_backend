@@ -4,12 +4,13 @@ import com.slost_only1.slost_only1.config.exception.CustomException;
 import com.slost_only1.slost_only1.config.response.ResponseCode;
 import com.slost_only1.slost_only1.data.req.AreaReq;
 import com.slost_only1.slost_only1.data.req.TeacherProfileEditReq;
-import com.slost_only1.slost_only1.model.AvailableArea;
-import com.slost_only1.slost_only1.model.DolbomReview;
-import com.slost_only1.slost_only1.model.TeacherProfile;
+import com.slost_only1.slost_only1.enums.Age;
+import com.slost_only1.slost_only1.enums.DolbomCategory;
+import com.slost_only1.slost_only1.model.*;
 import com.slost_only1.slost_only1.repository.*;
 import com.slost_only1.slost_only1.service.TeacherProfileService;
 import com.slost_only1.slost_only1.util.AuthUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,10 @@ public class TeacherProfileServiceImpl implements TeacherProfileService {
     private final DolbomReviewRepository dolbomReviewRepository;
 
     private final CloudFileRepository cloudFileRepository;
+
+    private final AvailableCategoryRepository availableCategoryRepository;
+
+    private final AvailableAgeRepository availableAgeRepository;
 
     private final AuthUtil authUtil;
 
@@ -59,6 +64,7 @@ public class TeacherProfileServiceImpl implements TeacherProfileService {
     }
 
     @Override
+    @Transactional
     public TeacherProfile editTeacherProfile(Long id, TeacherProfileEditReq req) {
         TeacherProfile teacherProfile = teacherProfileRepository.findById(id).orElseThrow();
 
@@ -68,10 +74,34 @@ public class TeacherProfileServiceImpl implements TeacherProfileService {
         if (req.introduce() != null) {
             teacherProfile.setIntroduce(req.introduce());
         }
+        if (req.availableAge() != null) {
+            updateAvailableAge(teacherProfile, req.availableAge());
+        }
+        if (req.availableCategory() != null) {
+            updateAvailableCategory(teacherProfile, req.availableCategory());
+        }
 
         teacherProfileRepository.save(teacherProfile);
 
         return teacherProfile;
+    }
+
+    @Transactional
+    private void updateAvailableAge(TeacherProfile teacherProfile, List<Age> availableAge) {
+        availableAgeRepository.deleteByTeacherProfile_Id(teacherProfile.getId());
+
+        List<AvailableAge> data = availableAge.stream().map(age -> new AvailableAge(teacherProfile, age)).toList();
+
+        availableAgeRepository.saveAll(data);
+    }
+
+    @Transactional
+    private void updateAvailableCategory(TeacherProfile teacherProfile, List<DolbomCategory> availableCategory) {
+        availableCategoryRepository.deleteByTeacherProfile_Id(teacherProfile.getId());
+
+        List<AvailableCategory> data = availableCategory.stream().map(category -> new AvailableCategory(teacherProfile, category)).toList();
+
+        availableCategoryRepository.saveAll(data);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.slost_only1.slost_only1.api;
 
 import com.slost_only1.slost_only1.config.response.Response;
+import com.slost_only1.slost_only1.data.MyTeacherProfileRes;
 import com.slost_only1.slost_only1.data.req.AreaReq;
 import com.slost_only1.slost_only1.data.AvailableAreaRes;
 import com.slost_only1.slost_only1.data.DolbomReviewRes;
@@ -45,8 +46,8 @@ public class TeacherProfileApi {
     }
 
     @GetMapping("/me")
-    public Response<TeacherProfileRes> getMyTeacherProfile() {
-        return new Response<>(TeacherProfileRes.from(myTeacherProfileService.getMyTeacherProfile()));
+    public Response<MyTeacherProfileRes> getMyTeacherProfile() {
+        return new Response<>(MyTeacherProfileRes.from(myTeacherProfileService.getMyTeacherProfile()));
     }
 
     @GetMapping("/me/review")
@@ -60,13 +61,13 @@ public class TeacherProfileApi {
     }
 
     @GetMapping("/{id}")
-    public Response<TeacherProfileRes> getTeacherProfileById(@PathVariable Long id) {
-        return new Response<>(TeacherProfileRes.from(service.getTeacherProfileById(id)));
+    public Response<MyTeacherProfileRes> getTeacherProfileById(@PathVariable Long id) {
+        return new Response<>(MyTeacherProfileRes.from(service.getTeacherProfileById(id)));
     }
 
     @PatchMapping("/{id}")
-    public Response<TeacherProfileRes> editTeacherProfile(@PathVariable Long id, @RequestBody TeacherProfileEditReq req) {
-        return new Response<>(TeacherProfileRes.from(service.editTeacherProfile(id, req)));
+    public Response<MyTeacherProfileRes> editTeacherProfile(@PathVariable Long id, @RequestBody TeacherProfileEditReq req) {
+        return new Response<>(MyTeacherProfileRes.from(service.editTeacherProfile(id, req)));
     }
 
     @PostMapping("/{id}/profile-image")
