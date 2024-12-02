@@ -1,6 +1,7 @@
 package com.slost_only1.slost_only1.service.impl;
 
 import com.slost_only1.slost_only1.config.exception.CustomException;
+import com.slost_only1.slost_only1.config.response.ResponseCode;
 import com.slost_only1.slost_only1.data.DolbomRes;
 import com.slost_only1.slost_only1.data.req.AddressListReq;
 import com.slost_only1.slost_only1.data.req.DolbomPostReq;
@@ -114,17 +115,18 @@ public class DolbomServiceImpl implements DolbomService {
     @Transactional
     public void apply(Long dolbomId) {
         Long teacherId = authUtil.getLoginMemberId();
-        Optional<TeacherProfile> teacherProfile = teacherProfileRepository.findByMemberId(teacherId);
-        if (teacherProfile.isEmpty()) {
-            throw new CustomException("프로필을 등록해주세요");
+        TeacherProfile teacherProfile = teacherProfileRepository.findByMemberId(teacherId).orElseThrow();
+        if (!teacherProfile.isApproved()) {
+            throw new CustomException(ResponseCode.NOT_APPROVED_TEACHER);
         }
-        Optional<DolbomAppliedTeacher> appliedTeacher = dolbomAppliedTeacherRepository.findByDolbomIdAndTeacherProfileId(dolbomId, teacherProfile.get().getId());
+        Optional<DolbomAppliedTeacher> appliedTeacher
+                = dolbomAppliedTeacherRepository.findByDolbomIdAndTeacherProfileId(dolbomId, teacherProfile.getId());
         if (appliedTeacher.isPresent()) {
             throw new CustomException("이미 지원한 돌봄입니다");
         }
         DolbomAppliedTeacher dolbomAppliedTeacher = new DolbomAppliedTeacher(
                 entityManager.getReference(Dolbom.class, dolbomId),
-                teacherProfile.get()
+                teacherProfile
         );
         dolbomAppliedTeacherRepository.save(dolbomAppliedTeacher);
 

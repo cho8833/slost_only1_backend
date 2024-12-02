@@ -23,7 +23,10 @@ public enum ResponseCode {
     FAIL_UPLOAD_FILE(500, "failed to upload file", "파일 업로드에 실패했습니다"),
 
     // Kid
-    NO_MORE_KID(550, "NO MORE KID", "아이는 최대 10명까지 추가 가능합니다");
+    NO_MORE_KID(550, "NO MORE KID", "아이는 최대 10명까지 추가 가능합니다"),
+
+    // TeacherProfile
+    NOT_APPROVED_TEACHER(4401, "Not Approved Teacher", "승인되지 않은 선생님입니다");
 
     private final int status;
     private final String message;

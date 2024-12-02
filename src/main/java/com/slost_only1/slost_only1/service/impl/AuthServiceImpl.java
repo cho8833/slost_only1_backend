@@ -53,9 +53,9 @@ public class AuthServiceImpl implements AuthService {
     public AuthorizationTokenData testSignIn(MemberRole role) {
         Long id;
         if (role == MemberRole.PARENT) {
-            id = 3L;
+            id = 2L;
         } else {
-            id = 4L;
+            id = 1L;
         }
         Member member = memberRepository.findById(id).orElseThrow();
         AuthorizationTokenData tokenData = tokenProvider.generateAuthorizationTokenData(member);
@@ -104,12 +104,5 @@ public class AuthServiceImpl implements AuthService {
         AuthorizationTokenData tokenData = tokenProvider.generateAuthorizationTokenData(member);
 
         return tokenData;
-    }
-
-    @Override
-    public MemberRes me() {
-        Member member = memberRepository.findById(authUtil.getLoginMemberId()).orElseThrow(() -> new CustomException(ResponseCode.FORBIDDEN));
-
-        return MemberRes.of(member);
     }
 }

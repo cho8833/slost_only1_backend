@@ -12,6 +12,4 @@ public interface AuthService {
     AuthorizationTokenData signUpWithKakao(String phoeNumber, KakaoOAuthToken token, MemberRole role);
 
     AuthorizationTokenData reissue(TokenReq req);
-
-    MemberRes me();
 }

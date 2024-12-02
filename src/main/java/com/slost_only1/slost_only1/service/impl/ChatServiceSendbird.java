@@ -96,8 +96,8 @@ public class ChatServiceSendbird implements ChatService {
 
     private ChatRoom createChatRoom(Long teacherId, Long parentId) {
         String channelUrl = generateChannelUrl(teacherId, parentId);
-        String teacherSendbirdId = MemberRole.TEACHER.getName() + teacherId.toString();
-        String parentSendbirdId = MemberRole.PARENT.getName() + parentId.toString();
+        String teacherSendbirdId = Member.getSendbirdId(MemberRole.TEACHER, teacherId);
+        String parentSendbirdId = Member.getSendbirdId(MemberRole.PARENT, parentId);
 
         SendbirdCreateGroupChannelReq req = new SendbirdCreateGroupChannelReq(
                 List.of(teacherSendbirdId, parentSendbirdId), List.of(teacherSendbirdId, parentSendbirdId),

@@ -49,7 +49,8 @@ public class CreateDummy {
                 "username3",
                 "password",
                 "01034567890",
-                MemberRole.PARENT
+                MemberRole.PARENT,
+                ""
         );
         Kid kid1 = new Kid(
                 member1,
@@ -72,23 +73,18 @@ public class CreateDummy {
                 "username2",
                 "password",
                 "01023456789",
-                MemberRole.TEACHER
+                MemberRole.TEACHER,
+                ""
         );
         memberRepository.save(member);
 
         TeacherProfile teacherProfile = new TeacherProfile(
-            "선생님2",
-                Gender.FEMALE,
-                LocalDate.of(2000, 8, 13),
-                "착한 선생님",
-                "https://s.pstatic.net/static/www/mobile/edit/20240112_1095/upload_1705057885416AaxUM.png",
-                TeacherProfileStatus.APPROVED,
-                member
+            member
         );
         teacherProfileRepository.save(teacherProfile);
 
-        Certificate certificate1 = new Certificate("91급 자격증", member);
-        Certificate certificate2 = new Certificate("81급 자격증", member);
+        Certificate certificate1 = new Certificate("91급 자격증", null, teacherProfile);
+        Certificate certificate2 = new Certificate("81급 자격증", null, teacherProfile);
 
         certificateRepository.saveAll(List.of(certificate1, certificate2));
 
@@ -111,7 +107,8 @@ public class CreateDummy {
                     "username" + i,
                     "password" + i,
                     "0101234567" + i,
-                    MemberRole.PARENT
+                    MemberRole.PARENT,
+                    ""
             ));
         }
         memberRepository.saveAll(members);

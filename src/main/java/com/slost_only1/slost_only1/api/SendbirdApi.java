@@ -2,7 +2,6 @@ package com.slost_only1.slost_only1.api;
 
 import com.slost_only1.slost_only1.config.response.Response;
 import com.slost_only1.slost_only1.data.MemberRes;
-import com.slost_only1.slost_only1.data.SendbirdCreateUserRes;
 import com.slost_only1.slost_only1.enums.MemberRole;
 import com.slost_only1.slost_only1.service.impl.ChatServiceSendbird;
 import com.slost_only1.slost_only1.util.AuthUtil;
