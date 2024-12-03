@@ -6,7 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 public enum MemberRole implements BaseEnum, GrantedAuthority {
 
     PARENT("PARENT", "학부모"),
-    TEACHER("TEACHER", "선생님");
+    TEACHER("TEACHER", "선생님"),
+    ADMIN("ADMIN", "관리자");
 
     private final String name;
 

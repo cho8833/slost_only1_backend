@@ -7,6 +7,9 @@ import com.slost_only1.slost_only1.data.req.ReviewReportReq;
 import com.slost_only1.slost_only1.model.DolbomReview;
 import com.slost_only1.slost_only1.service.DolbomReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,5 +30,12 @@ public class DolbomReviewApi {
     public Response<?> report(@RequestBody ReviewReportReq req) {
         dolbomReviewService.report(req);
         return Response.SUCCESS;
+    }
+
+    @GetMapping("/report")
+    public Response<Page<DolbomReviewRes>> getReportedReview(@PageableDefault Pageable pageable) {
+        Page<DolbomReview> result = dolbomReviewService.getReported(pageable);
+        Page<DolbomReviewRes> res = result.map(DolbomReviewRes::from);
+        return new Response<>(res);
     }
 }

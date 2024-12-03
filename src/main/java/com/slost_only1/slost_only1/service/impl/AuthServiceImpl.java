@@ -4,7 +4,7 @@ import com.slost_only1.slost_only1.auth.AuthorizationTokenProvider;
 import com.slost_only1.slost_only1.config.exception.CustomException;
 import com.slost_only1.slost_only1.config.response.ResponseCode;
 import com.slost_only1.slost_only1.data.*;
-import com.slost_only1.slost_only1.data.req.SendbirdCreateUserReq;
+import com.slost_only1.slost_only1.data.req.AdminSignInReq;
 import com.slost_only1.slost_only1.enums.AuthProvider;
 import com.slost_only1.slost_only1.enums.MemberRole;
 import com.slost_only1.slost_only1.model.Member;
@@ -12,7 +12,6 @@ import com.slost_only1.slost_only1.model.OAuth;
 import com.slost_only1.slost_only1.model.TeacherProfile;
 import com.slost_only1.slost_only1.repository.*;
 import com.slost_only1.slost_only1.service.AuthService;
-import com.slost_only1.slost_only1.util.AuthUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,6 @@ public class AuthServiceImpl implements AuthService {
 
     private final MemberRepository memberRepository;
     private final AuthorizationTokenProvider tokenProvider;
-    private final AuthUtil authUtil;
     private final KakaoAuthRepository kakaoAuthRepository;
     private final OAuthRepository oAuthRepository;
     private final ChatServiceSendbird chatService;
@@ -47,6 +45,18 @@ public class AuthServiceImpl implements AuthService {
         } else {
             throw new CustomException(ResponseCode.NOT_USER);
         }
+    }
+
+    @Override
+    public AuthorizationTokenData adminSignIn(AdminSignInReq req) {
+        Member member = memberRepository.findByUsernameAndPassword(req.id(), req.password())
+                .orElseThrow(() -> new CustomException(ResponseCode.NO_USER_FOUND));
+
+        if (member.getRole() != MemberRole.ADMIN) {
+            throw new CustomException(ResponseCode.FORBIDDEN);
+        }
+
+        return tokenProvider.generateAuthorizationTokenData(member);
     }
 
     @Override

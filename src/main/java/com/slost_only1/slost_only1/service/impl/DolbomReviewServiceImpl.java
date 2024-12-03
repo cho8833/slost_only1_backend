@@ -10,6 +10,8 @@ import com.slost_only1.slost_only1.service.DolbomReviewService;
 import com.slost_only1.slost_only1.util.AuthUtil;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -54,5 +56,10 @@ public class DolbomReviewServiceImpl implements DolbomReviewService {
         review.setReportReason(req.reason());
 
         repository.save(review);
+    }
+
+    @Override
+    public Page<DolbomReview> getReported(Pageable pageable) {
+        return repository.findByReportReasonNotNull(pageable);
     }
 }

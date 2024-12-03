@@ -2,6 +2,7 @@ package com.slost_only1.slost_only1.api;
 
 import com.slost_only1.slost_only1.config.response.Response;
 import com.slost_only1.slost_only1.data.*;
+import com.slost_only1.slost_only1.data.req.AdminSignInReq;
 import com.slost_only1.slost_only1.data.req.SignInReq;
 import com.slost_only1.slost_only1.data.req.SignUpReq;
 import com.slost_only1.slost_only1.enums.AuthProvider;
@@ -22,6 +23,11 @@ public class AuthApi {
     public Response<AuthorizationTokenData> testSignIn(@RequestParam MemberRole role) {
 //        return new Response<>(authService.signIn(req));
         return new Response<>(authService.testSignIn(role));
+    }
+
+    @PostMapping("/sign-in/admin")
+    public Response<AuthorizationTokenData> adminSignIn(@RequestBody AdminSignInReq req) {
+        return new Response<>(authService.adminSignIn(req));
     }
 
     @PostMapping("/sign-in")

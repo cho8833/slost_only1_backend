@@ -42,6 +42,18 @@ public class CreateDummy {
     private AvailableAreaRepository availableAreaRepository;
 
     @Test
+    public void createAdmin() {
+        Member admin = new Member(
+                "admin",
+                "test",
+                "01012341234",
+                MemberRole.ADMIN,
+                ""
+        );
+        memberRepository.save(admin);
+    }
+
+    @Test
     public void createParentDummy() {
 
         LocalDateTime now = LocalDateTime.now();
