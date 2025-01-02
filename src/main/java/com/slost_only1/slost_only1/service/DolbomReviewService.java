@@ -3,6 +3,7 @@ package com.slost_only1.slost_only1.service;
 import com.slost_only1.slost_only1.data.req.DolbomReviewCreateReq;
 import com.slost_only1.slost_only1.data.req.ReviewReportReq;
 import com.slost_only1.slost_only1.model.DolbomReview;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,4 +17,6 @@ public interface DolbomReviewService {
     void report(ReviewReportReq req);
 
     Page<DolbomReview> getReported(Pageable pageable);
+
+    void delete(Long id);
 }

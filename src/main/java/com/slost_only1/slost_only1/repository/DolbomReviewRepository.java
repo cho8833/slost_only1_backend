@@ -17,4 +17,6 @@ public interface DolbomReviewRepository extends JpaRepository<DolbomReview, Long
 
     Page<DolbomReview> findByReportReasonNotNull(Pageable pageable);
 
+    Optional<DolbomReview> findByDolbomId(Long id);
+
 }

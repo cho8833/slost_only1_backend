@@ -3,6 +3,8 @@ package com.slost_only1.slost_only1.api;
 import com.slost_only1.slost_only1.config.response.Response;
 import com.slost_only1.slost_only1.data.DolbomRes;
 import com.slost_only1.slost_only1.data.DolbomReviewRes;
+import com.slost_only1.slost_only1.data.TeacherProfileDetailRes;
+import com.slost_only1.slost_only1.data.TeacherProfileRes;
 import com.slost_only1.slost_only1.data.req.AddressListReq;
 import com.slost_only1.slost_only1.data.req.DolbomPostReq;
 import com.slost_only1.slost_only1.enums.DolbomStatus;
@@ -60,8 +62,10 @@ public class DolbomApi {
     }
 
     @GetMapping("/pending-teacher")
-    public Response<List<TeacherProfile>> getPendingTeacher(@RequestParam Long dolbomId) {
-        return new Response<>(teacherProfileService.getDolbomPendingTeacher(dolbomId));
+    public Response<List<TeacherProfileRes>> getPendingTeacher(@RequestParam Long dolbomId) {
+        List<TeacherProfile> fetch = teacherProfileService.getDolbomPendingTeacher(dolbomId);
+        List<TeacherProfileRes> res = fetch.stream().map(TeacherProfileRes::from).toList();
+        return new Response<>(res);
     }
 
     @GetMapping("/teacher/me")
@@ -88,5 +92,17 @@ public class DolbomApi {
         } else {
             return new Response<>(DolbomReviewRes.from(fetch.get()));
         }
+    }
+
+    @PostMapping("/{dolbomId}/match")
+    public Response<?> matchDolbom(@PathVariable Long dolbomId, @RequestParam Long teacherProfileId) {
+        dolbomService.match(dolbomId, teacherProfileId);
+        return Response.SUCCESS;
+    }
+
+    @GetMapping("/{dolbomId}/teacher")
+    public Response<TeacherProfileRes> getDolbomTeacher(@PathVariable Long dolbomId) {
+        TeacherProfile teacherProfile = teacherProfileService.getByDolbomId(dolbomId);
+        return new Response<>(TeacherProfileRes.from(teacherProfile));
     }
 }

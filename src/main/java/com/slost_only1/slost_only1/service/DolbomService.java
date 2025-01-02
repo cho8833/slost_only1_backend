@@ -19,4 +19,6 @@ public interface DolbomService {
     Page<DolbomRes> getTeacherAppliedDolbom(Pageable pageReq);
 
     void apply(Long dolbomId);
+
+    void match(Long dolbomId, Long teacherProfileId);
 }

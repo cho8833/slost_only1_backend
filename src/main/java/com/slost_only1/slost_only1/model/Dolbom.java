@@ -4,10 +4,7 @@ import com.slost_only1.slost_only1.base.BaseEntity;
 import com.slost_only1.slost_only1.enums.DolbomCategory;
 import com.slost_only1.slost_only1.enums.DolbomStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -17,6 +14,7 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

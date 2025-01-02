@@ -6,6 +6,7 @@ import com.slost_only1.slost_only1.data.req.AreaReq;
 import com.slost_only1.slost_only1.data.req.TeacherProfileEditReq;
 import com.slost_only1.slost_only1.enums.Age;
 import com.slost_only1.slost_only1.enums.DolbomCategory;
+import com.slost_only1.slost_only1.enums.TeacherProfileStatus;
 import com.slost_only1.slost_only1.model.*;
 import com.slost_only1.slost_only1.repository.*;
 import com.slost_only1.slost_only1.service.TeacherProfileService;
@@ -40,7 +41,7 @@ public class TeacherProfileServiceImpl implements TeacherProfileService {
 
     @Override
     public List<TeacherProfile> getDolbomPendingTeacher(Long dolbomId) {
-        return teacherProfileRepository.findByDolbomId(dolbomId);
+        return teacherProfileRepository.findByAppliedDolbomId(dolbomId);
     }
 
     @Override
@@ -59,7 +60,12 @@ public class TeacherProfileServiceImpl implements TeacherProfileService {
     }
 
     @Override
-    public Page<TeacherProfile> getTeacherProfile(Pageable pageable) {
+    public TeacherProfile getByDolbomId(Long id) {
+        return teacherProfileRepository.findByDolbomId(id);
+    }
+
+    @Override
+    public Page<TeacherProfile> pagedList(Pageable pageable) {
         return teacherProfileRepository.findAll(pageable);
     }
 
@@ -71,8 +77,20 @@ public class TeacherProfileServiceImpl implements TeacherProfileService {
         if (req.howBecameTeacher() != null) {
             teacherProfile.setHowBecameTeacher(req.howBecameTeacher());
         }
+        if (req.name() != null) {
+            teacherProfile.setName(req.name());
+        }
         if (req.introduce() != null) {
             teacherProfile.setIntroduce(req.introduce());
+        }
+        if (req.profileName() != null) {
+            teacherProfile.setProfileName(req.profileName());
+        }
+        if (req.birthday() != null) {
+            teacherProfile.setBirthday(req.birthday());
+        }
+        if (req.gender() != null) {
+            teacherProfile.setGender(req.gender());
         }
         if (req.availableAge() != null) {
             updateAvailableAge(teacherProfile, req.availableAge());
@@ -139,5 +157,14 @@ public class TeacherProfileServiceImpl implements TeacherProfileService {
             // 신고되지 않은 리뷰만 가져옴
             return dolbomReviewRepository.findByTeacherProfile_IdAndReportReasonNull(teacherId, pageable);
         }
+    }
+
+    @Override
+    public void setTeacherProfileStatus(Long id, TeacherProfileStatus status) {
+        TeacherProfile teacherProfile = teacherProfileRepository.findById(id).orElseThrow();
+
+        teacherProfile.setStatus(status);
+
+        teacherProfileRepository.save(teacherProfile);
     }
 }

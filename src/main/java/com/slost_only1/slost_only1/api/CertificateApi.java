@@ -37,6 +37,4 @@ public class CertificateApi {
         CertificateCreateReq req = new CertificateCreateReq(title, pdf);
         return new Response<>(CertificateRes.from(service.editCertificate(id, req)));
     }
-
-
 }

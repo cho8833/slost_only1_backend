@@ -51,16 +51,17 @@ public class TeacherProfile extends BaseEntity {
     @ManyToOne
     private Member member;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name="teacher_profile_id")
     private List<AvailableAge> availableAges;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name="teacher_profile_id")
     private List<AvailableCategory> availableCategories;
 
     public TeacherProfile(Member member) {
         this.member = member;
+        this.status = TeacherProfileStatus.PENDING;
     }
 
     public Boolean isApproved() {

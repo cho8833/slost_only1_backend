@@ -21,6 +21,5 @@ public class KidDolbom extends BaseEntity {
     private Dolbom dolbom;
 
     @ManyToOne(fetch = FetchType.LAZY)
-
     private Kid kid;
 }

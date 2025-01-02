@@ -38,4 +38,10 @@ public class DolbomReviewApi {
         Page<DolbomReviewRes> res = result.map(DolbomReviewRes::from);
         return new Response<>(res);
     }
+
+    @DeleteMapping("/{id}")
+    public Response<?> delete(@PathVariable Long id) {
+        dolbomReviewService.delete(id);
+        return Response.SUCCESS;
+    }
 }

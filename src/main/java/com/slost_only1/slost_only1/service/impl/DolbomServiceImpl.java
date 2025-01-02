@@ -2,7 +2,10 @@ package com.slost_only1.slost_only1.service.impl;
 
 import com.slost_only1.slost_only1.config.exception.CustomException;
 import com.slost_only1.slost_only1.config.response.ResponseCode;
+import com.slost_only1.slost_only1.data.DolbomLocationRes;
 import com.slost_only1.slost_only1.data.DolbomRes;
+import com.slost_only1.slost_only1.data.DolbomTimeSlotRes;
+import com.slost_only1.slost_only1.data.KidRes;
 import com.slost_only1.slost_only1.data.req.AddressListReq;
 import com.slost_only1.slost_only1.data.req.DolbomPostReq;
 import com.slost_only1.slost_only1.enums.DolbomStatus;
@@ -15,12 +18,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,7 +46,10 @@ public class DolbomServiceImpl implements DolbomService {
 
     private final EntityManager entityManager;
 
+    private final KidRepository kidRepository;
+
     private final AuthUtil authUtil;
+
 
     @Override
     @Transactional
@@ -84,31 +91,77 @@ public class DolbomServiceImpl implements DolbomService {
     public Page<DolbomRes> getParentDolbom(DolbomStatus status, Pageable pageable) {
         Long memberId = authUtil.getLoginMemberId();
 
-        return dolbomRepository.findByMemberIdAndAddressAndStatus(
+        Page<Dolbom> dolboms = dolbomRepository.findByMemberIdAndAddressAndStatus(
                 memberId,
                 new AddressListReq(),
                 status,
                 pageable
         );
+
+        List<DolbomRes> dolbomRes = fetchDolbomDetails(dolboms.getContent());
+
+        Page<DolbomRes> dolbomResPage = new PageImpl<>(
+                dolbomRes,
+                dolboms.getPageable(),
+                dolboms.getTotalElements()
+        );
+
+        return dolbomResPage;
     }
 
     @Override
     public Page<DolbomRes> getMatchingDolbom(AddressListReq addressReq, Pageable pageable) {
-        return dolbomRepository.findByMemberIdAndAddressAndStatus(null,
+        Page<Dolbom> dolboms = dolbomRepository.findByMemberIdAndAddressAndStatus(null,
                 addressReq,
                 DolbomStatus.MATCHING,
                 pageable);
 
+        List<DolbomRes> dolbomRes = fetchDolbomDetails(dolboms.getContent());
+
+        Page<DolbomRes> dolbomResPage = new PageImpl<>(
+                dolbomRes,
+                dolboms.getPageable(),
+                dolboms.getTotalElements()
+        );
+
+        return dolbomResPage;
     }
 
     @Override
     public Page<DolbomRes> getTeacherDolbom(DolbomStatus status, Pageable pageReq) {
-        return dolbomRepository.findByTeacherIdAndStatus(authUtil.getLoginMemberId(), status, pageReq);
+        Page<Dolbom> dolboms = dolbomRepository.findByTeacherIdAndStatus(
+                authUtil.getLoginMemberId(),
+                status,
+                pageReq
+        );
+
+        List<DolbomRes> dolbomRes = fetchDolbomDetails(dolboms.getContent());
+
+        Page<DolbomRes> dolbomResPage = new PageImpl<>(
+                dolbomRes,
+                dolboms.getPageable(),
+                dolboms.getTotalElements()
+        );
+
+        return dolbomResPage;
     }
 
     @Override
     public Page<DolbomRes> getTeacherAppliedDolbom(Pageable pageReq) {
-        return dolbomRepository.findByAppliedTeacherId(authUtil.getLoginMemberId(), pageReq);
+        Page<Dolbom> dolboms = dolbomRepository.findByAppliedTeacherId(
+                authUtil.getLoginMemberId(),
+                pageReq
+        );
+
+        List<DolbomRes> dolbomRes = fetchDolbomDetails(dolboms.getContent());
+
+        Page<DolbomRes> dolbomResPage = new PageImpl<>(
+                dolbomRes,
+                dolboms.getPageable(),
+                dolboms.getTotalElements()
+        );
+
+        return dolbomResPage;
     }
 
     @Override
@@ -131,5 +184,50 @@ public class DolbomServiceImpl implements DolbomService {
         dolbomAppliedTeacherRepository.save(dolbomAppliedTeacher);
 
         chatService.askDolbom(dolbomId);
+    }
+
+    @Override
+    public void match(Long dolbomId, Long teacherProfileId) {
+        Dolbom dolbom = dolbomRepository.findById(dolbomId).orElseThrow();
+        TeacherProfile teacherProfile = entityManager.getReference(TeacherProfile.class, teacherProfileId);
+
+        dolbom.setTeacherProfile(teacherProfile);
+        dolbom.setStatus(DolbomStatus.RESERVED);
+
+        dolbomRepository.save(dolbom);
+    }
+
+    private List<DolbomRes> fetchDolbomDetails(List<Dolbom> dolboms) {
+        List<Long> dolbomIds = dolboms.stream().map(Dolbom::getId).toList();
+        Map<Long, List<DolbomDow>> dows = dolbomDowRepository.findByDolbom_IdIn(dolbomIds).stream()
+                .collect(Collectors.groupingBy(dow -> dow.getDolbom().getId()));
+
+        Map<Long, List<Kid>> kids = kidRepository.findByDolbomIdsIn(dolbomIds);
+
+        Map<Long, List<DolbomTimeSlot>> timeSlots = dolbomTimeSlotRepository.findByDolbom_IdIn(dolbomIds).stream()
+                .collect(Collectors.groupingBy(timeSlot -> timeSlot.getDolbom().getId()));
+
+        return dolboms.stream()
+                .map(dolbom -> {
+                    DolbomRes dto = new DolbomRes(
+                            dolbom.getId(),
+                            kids.getOrDefault(dolbom.getId(), Collections.emptyList()).stream().map(KidRes::of).toList(),
+                            timeSlots.getOrDefault(dolbom.getId(), Collections.emptyList()).stream().map(DolbomTimeSlotRes::from).toList(),
+                            dows.getOrDefault(dolbom.getId(), Collections.emptyList()).stream().map(DolbomDow::getDayOfWeek).toList(),
+                            DolbomLocationRes.of(dolbom.getDolbomLocation()),
+                            dolbom.getTeacherProfile() != null ? dolbom.getTeacherProfile().getId() : null,
+                            dolbom.getStartTime(),
+                            dolbom.getEndTime(),
+                            dolbom.getStatus(),
+                            dolbom.getCategory(),
+                            dolbom.getWeeklyRepeat(),
+                            dolbom.getSetSeveralTime(),
+                            dolbom.getRepeatStartDate(),
+                            dolbom.getRepeatEndDate(),
+                            dolbom.getPay()
+                    );
+                    return dto;
+                })
+                .toList();
     }
 }

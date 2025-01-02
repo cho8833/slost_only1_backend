@@ -3,7 +3,9 @@ package com.slost_only1.slost_only1.data;
 import com.querydsl.core.annotations.QueryProjection;
 import com.slost_only1.slost_only1.enums.DolbomCategory;
 import com.slost_only1.slost_only1.enums.DolbomStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Time;
 import java.time.DayOfWeek;
@@ -12,15 +14,16 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
+@AllArgsConstructor
 public class DolbomRes {
 
     private final Long id;
 
-    private final Set<KidRes> kids;
+    private final List<KidRes> kids;
 
     private final List<DolbomTimeSlotRes> timeSlots;
 
-    private final Set<DayOfWeek> dayOfWeeks;
+    private final List<DayOfWeek> dayOfWeeks;
 
     private final DolbomLocationRes dolbomLocation;
 
@@ -43,23 +46,4 @@ public class DolbomRes {
     private final LocalDate repeatEndDate;
 
     private final Integer pay;
-
-    @QueryProjection
-    public DolbomRes(Long id, Set<KidRes> kids, Set<DolbomTimeSlotRes> timeSlots, Set<DayOfWeek> dows, DolbomLocationRes dolbomLocation, Long teacherProfileId, Time startTime, Time endTime, DolbomStatus status, DolbomCategory category, Boolean weeklyRepeat, Boolean setSeveralTime, LocalDate repeatStartDate, LocalDate repeatEndDate, Integer pay) {
-        this.id = id;
-        this.kids = kids;
-        this.timeSlots = timeSlots.stream().sorted((o1, o2) -> -o2.startDateTime().compareTo(o1.startDateTime())).toList();
-        this.dayOfWeeks = dows;
-        this.dolbomLocation = dolbomLocation;
-        this.teacherProfileId = teacherProfileId;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.status = status;
-        this.category = category;
-        this.weeklyRepeat = weeklyRepeat;
-        this.setSeveralTime = setSeveralTime;
-        this.repeatStartDate = repeatStartDate;
-        this.repeatEndDate = repeatEndDate;
-        this.pay = pay;
-    }
 }

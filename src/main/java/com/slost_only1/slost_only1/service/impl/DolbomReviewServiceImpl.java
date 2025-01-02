@@ -9,6 +9,7 @@ import com.slost_only1.slost_only1.repository.DolbomReviewRepository;
 import com.slost_only1.slost_only1.service.DolbomReviewService;
 import com.slost_only1.slost_only1.util.AuthUtil;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,8 +29,7 @@ public class DolbomReviewServiceImpl implements DolbomReviewService {
 
     @Override
     public Optional<DolbomReview> getReviewByDolbomId(Long dolbomId) throws Throwable {
-        Long memberId = authUtil.getLoginMemberId();
-        return repository.findByDolbomIdAndMemberId(dolbomId, memberId);
+        return repository.findByDolbomId(dolbomId);
     }
 
     @Override
@@ -61,5 +61,11 @@ public class DolbomReviewServiceImpl implements DolbomReviewService {
     @Override
     public Page<DolbomReview> getReported(Pageable pageable) {
         return repository.findByReportReasonNotNull(pageable);
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 }

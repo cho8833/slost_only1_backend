@@ -1,12 +1,13 @@
 package com.slost_only1.slost_only1.api;
 
 import com.slost_only1.slost_only1.config.response.Response;
-import com.slost_only1.slost_only1.data.MyTeacherProfileRes;
+import com.slost_only1.slost_only1.data.TeacherProfileDetailRes;
 import com.slost_only1.slost_only1.data.req.AreaReq;
 import com.slost_only1.slost_only1.data.AvailableAreaRes;
 import com.slost_only1.slost_only1.data.DolbomReviewRes;
 import com.slost_only1.slost_only1.data.TeacherProfileRes;
 import com.slost_only1.slost_only1.data.req.TeacherProfileEditReq;
+import com.slost_only1.slost_only1.enums.TeacherProfileStatus;
 import com.slost_only1.slost_only1.model.DolbomReview;
 import com.slost_only1.slost_only1.model.TeacherProfile;
 import com.slost_only1.slost_only1.service.MyTeacherProfileService;
@@ -46,8 +47,8 @@ public class TeacherProfileApi {
     }
 
     @GetMapping("/me")
-    public Response<MyTeacherProfileRes> getMyTeacherProfile() {
-        return new Response<>(MyTeacherProfileRes.from(myTeacherProfileService.getMyTeacherProfile()));
+    public Response<TeacherProfileDetailRes> getMyTeacherProfile() {
+        return new Response<>(TeacherProfileDetailRes.from(myTeacherProfileService.getMyTeacherProfile()));
     }
 
     @GetMapping("/me/review")
@@ -61,13 +62,19 @@ public class TeacherProfileApi {
     }
 
     @GetMapping("/{id}")
-    public Response<MyTeacherProfileRes> getTeacherProfileById(@PathVariable Long id) {
-        return new Response<>(MyTeacherProfileRes.from(service.getTeacherProfileById(id)));
+    public Response<TeacherProfileDetailRes> getTeacherProfileById(@PathVariable Long id) {
+        return new Response<>(TeacherProfileDetailRes.from(service.getTeacherProfileById(id)));
     }
 
     @PatchMapping("/{id}")
-    public Response<MyTeacherProfileRes> editTeacherProfile(@PathVariable Long id, @RequestBody TeacherProfileEditReq req) {
-        return new Response<>(MyTeacherProfileRes.from(service.editTeacherProfile(id, req)));
+    public Response<TeacherProfileDetailRes> editTeacherProfile(@PathVariable Long id, @RequestBody TeacherProfileEditReq req) {
+        return new Response<>(TeacherProfileDetailRes.from(service.editTeacherProfile(id, req)));
+    }
+
+    @PostMapping("/{id}/status")
+    public Response<?> setStatus(@PathVariable Long id, @RequestParam TeacherProfileStatus status) {
+        service.setTeacherProfileStatus(id, status);
+        return Response.SUCCESS;
     }
 
     @PostMapping("/{id}/profile-image")
@@ -77,7 +84,7 @@ public class TeacherProfileApi {
 
     @GetMapping
     public Response<Page<TeacherProfileRes>> getTeacherProfiles(@PageableDefault Pageable pageable) {
-        Page<TeacherProfile> fetch = service.getTeacherProfile(pageable);
+        Page<TeacherProfile> fetch = service.pagedList(pageable);
         Page<TeacherProfileRes> result = fetch.map(TeacherProfileRes::from);
         return new Response<>(result);
     }
