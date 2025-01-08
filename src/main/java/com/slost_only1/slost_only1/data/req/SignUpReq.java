@@ -4,23 +4,23 @@ package com.slost_only1.slost_only1.data.req;
 import com.slost_only1.slost_only1.data.KakaoOAuthToken;
 import com.slost_only1.slost_only1.enums.AuthProvider;
 import com.slost_only1.slost_only1.enums.MemberRole;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class SignUpReq {
+@Builder
+public record SignUpReq(
+    String phoneNumber,
 
-    String phoneNumber;
+    String email,
 
-    AuthProvider authProvider;
+    String oAuthUserId,
 
-    MemberRole role;
+    AuthProvider authProvider,
 
-    KakaoOAuthToken kakaoToken;
+    MemberRole role,
+
+    KakaoOAuthToken kakaoToken
+
+) {
+
 
 }

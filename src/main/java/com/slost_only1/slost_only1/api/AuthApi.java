@@ -35,16 +35,19 @@ public class AuthApi {
         if (req.authProvider() == AuthProvider.KAKAO) {
             return new Response<>(authService.signInWithKakao(req.role(), req.kakaoToken()));
         }
-        throw new BadRequestException();
-    }
-
-    @PostMapping("/sign-up")
-    public Response<AuthorizationTokenData> signUp(@RequestBody SignUpReq req) throws BadRequestException {
-        if (req.getAuthProvider() == AuthProvider.KAKAO) {
-            return new Response<>(authService.signUpWithKakao(req.getPhoneNumber(), req.getKakaoToken(), req.getRole()));
+        else if (req.authProvider() == AuthProvider.APPLE) {
+            return new Response<>(authService.signInWithApple(req.role(), req.appleCredential()));
         }
         throw new BadRequestException();
     }
+
+//    @PostMapping("/sign-up")
+//    public Response<AuthorizationTokenData> signUp(@RequestBody SignUpReq req) throws BadRequestException {
+//        if (req.getAuthProvider() == AuthProvider.KAKAO) {
+//            return new Response<>(authService.signUpWithKakao(req.getPhoneNumber(), req.getKakaoToken(), req.getRole()));
+//        }
+//        throw new BadRequestException();
+//    }
 
     @PostMapping("/token")
     public Response<AuthorizationTokenData> token(@RequestBody TokenReq req) {

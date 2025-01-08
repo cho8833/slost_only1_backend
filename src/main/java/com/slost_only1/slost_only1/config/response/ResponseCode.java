@@ -7,10 +7,13 @@ public enum ResponseCode {
     //Global Server Error
     INTERNAL_SERVER_ERROR(500,  "Internal Server Error", "의도 하지 않은 서버에러 발생"),
 
+    FATAL_ERROR(500, "fatal error", "이 기능은 현재 점검중입니다"),
+
     // 인증 만료
     UNAUTHORIZED(401, "unauthorized", "인증키 필요"),
     WRONG_REQUEST(400, "wrong request", "잘못된 요청입니다"),
     NO_USER_FOUND(401, "No user found", "아이디 혹은 비밀번호가 잘못되었습니다"),
+    WRONG_TOKEN(400, "wrong token", "잘못된 로그인입니다"),
 
     NOT_USER(4002, "not user", "유저가 아닙니다"),
     CROSS_USER(4001, "Cross user", "교차 이용 불가"),
@@ -27,6 +30,8 @@ public enum ResponseCode {
 
     // TeacherProfile
     NOT_APPROVED_TEACHER(4401, "Not Approved Teacher", "승인되지 않은 선생님입니다");
+
+
 
     private final int status;
     private final String message;

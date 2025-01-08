@@ -5,17 +5,21 @@ import com.slost_only1.slost_only1.config.exception.CustomException;
 import com.slost_only1.slost_only1.config.response.ResponseCode;
 import com.slost_only1.slost_only1.data.*;
 import com.slost_only1.slost_only1.data.req.AdminSignInReq;
+import com.slost_only1.slost_only1.data.req.SignUpReq;
 import com.slost_only1.slost_only1.enums.AuthProvider;
 import com.slost_only1.slost_only1.enums.MemberRole;
+import com.slost_only1.slost_only1.model.JwtPublicKey;
 import com.slost_only1.slost_only1.model.Member;
 import com.slost_only1.slost_only1.model.OAuth;
 import com.slost_only1.slost_only1.model.TeacherProfile;
 import com.slost_only1.slost_only1.repository.*;
 import com.slost_only1.slost_only1.service.AuthService;
+import io.jsonwebtoken.Claims;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,17 +37,22 @@ public class AuthServiceImpl implements AuthService {
     public AuthorizationTokenData signInWithKakao(MemberRole role, KakaoOAuthToken token) {
         KakaoUser kakaoUser = kakaoAuthRepository.getUserInfo(token.accessToken());
 
-        Optional<OAuth> oAuth = oAuthRepository.findByUserId(kakaoUser.id().toString());
+        Optional<OAuth> oAuth = oAuthRepository.findByUserIdAndAuthProvider(
+                kakaoUser.id().toString(), AuthProvider.KAKAO);
 
         if (oAuth.isPresent()) {
-            Member member = oAuth.get().getMember();
-            if (member.getRole() != role) {
-                throw new CustomException(ResponseCode.CROSS_USER);
-            } else {
-                return tokenProvider.generateAuthorizationTokenData(member);
-            }
-        } else {
-            throw new CustomException(ResponseCode.NOT_USER);
+            return onSignInSuccess(role, oAuth.get());
+        }
+        // 회원이 존재하지 않을 시, 바로 회원가입
+        else {
+            SignUpReq req = SignUpReq.builder()
+                    .oAuthUserId(kakaoUser.id().toString())
+                    .authProvider(AuthProvider.KAKAO)
+                    .role(role)
+                    .build();
+            Member member = signUp(req);
+
+            return tokenProvider.generateAuthorizationTokenData(member);
         }
     }
 
@@ -73,32 +82,19 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Transactional
-    @Override
-    public AuthorizationTokenData signUpWithKakao(String phoneNumber, KakaoOAuthToken token, MemberRole role) {
-        // 같은 전화번호의 다른 Member 가 있는 경우 DUPLICATE USER Exception
-        if (memberRepository.findByPhoneNumber(phoneNumber).isPresent()) {
-            throw new CustomException(ResponseCode.DUPLICATE_USER);
-        }
-
-        KakaoUser kakaoUser = kakaoAuthRepository.getUserInfo(token.accessToken());
-        Member member = signUp(phoneNumber, kakaoUser.id().toString(), AuthProvider.KAKAO, role);
-
-        return tokenProvider.generateAuthorizationTokenData(member);
-    }
-
-    @Transactional
-    private Member signUp(String phoneNumber, String oAuthUserId, AuthProvider authProvider, MemberRole memberRole) {
+    private Member signUp(SignUpReq req) {
         Member member = new Member();
-        member.setRole(memberRole);
-        member.setPhoneNumber(phoneNumber);
+        member.setRole(req.role());
+        member.setEmail(req.email());
+        member.setPhoneNumber(req.phoneNumber());
         memberRepository.save(member);
 
-        if (memberRole == MemberRole.TEACHER) {
+        if (req.role() == MemberRole.TEACHER) {
             TeacherProfile teacherProfile = new TeacherProfile(member);
             teacherProfileRepository.save(teacherProfile);
         }
 
-        OAuth newOAuth = new OAuth(member, oAuthUserId, authProvider);
+        OAuth newOAuth = new OAuth(member, req.oAuthUserId(), req.authProvider());
         oAuthRepository.save(newOAuth);
 
         // create Sendbird User
@@ -114,5 +110,38 @@ public class AuthServiceImpl implements AuthService {
         AuthorizationTokenData tokenData = tokenProvider.generateAuthorizationTokenData(member);
 
         return tokenData;
+    }
+
+    @Override
+    public AuthorizationTokenData signInWithApple(MemberRole role, AppleAuthorizationCredential credential) {
+        Claims claims = tokenProvider.parseClaims(AuthProvider.APPLE, credential.identityToken());
+        String sub = (String) claims.get("sub");
+
+        Optional<OAuth> oAuth = oAuthRepository.findByUserIdAndAuthProvider(sub, AuthProvider.APPLE);
+
+        if (oAuth.isPresent()) {
+            return onSignInSuccess(role, oAuth.get());
+        }
+        // 회원이 존재하지 않을 시 바로 회원가입
+        else {
+            SignUpReq req = SignUpReq.builder()
+                    .email((String) claims.get("email"))
+                    .oAuthUserId(sub)
+                    .authProvider(AuthProvider.APPLE)
+                    .role(role)
+                    .build();
+            Member member = signUp(req);
+
+            return tokenProvider.generateAuthorizationTokenData(member);
+        }
+    }
+
+    private AuthorizationTokenData onSignInSuccess(MemberRole role, OAuth oAuth) {
+        Member member = oAuth.getMember();
+        if (member.getRole() != role) {
+            throw new CustomException(ResponseCode.CROSS_USER);
+        } else {
+            return tokenProvider.generateAuthorizationTokenData(member);
+        }
     }
 }

@@ -3,7 +3,6 @@ package com.slost_only1.slost_only1.api;
 import com.slost_only1.slost_only1.config.response.Response;
 import com.slost_only1.slost_only1.data.DolbomRes;
 import com.slost_only1.slost_only1.data.DolbomReviewRes;
-import com.slost_only1.slost_only1.data.TeacherProfileDetailRes;
 import com.slost_only1.slost_only1.data.TeacherProfileRes;
 import com.slost_only1.slost_only1.data.req.AddressListReq;
 import com.slost_only1.slost_only1.data.req.DolbomPostReq;
@@ -104,5 +103,10 @@ public class DolbomApi {
     public Response<TeacherProfileRes> getDolbomTeacher(@PathVariable Long dolbomId) {
         TeacherProfile teacherProfile = teacherProfileService.getByDolbomId(dolbomId);
         return new Response<>(TeacherProfileRes.from(teacherProfile));
+    }
+    @PostMapping("/{dolbomId}/finish")
+    public Response<?> finishDolbom(@PathVariable Long dolbomId) {
+        dolbomService.finishDolbom(dolbomId);
+        return Response.SUCCESS;
     }
 }

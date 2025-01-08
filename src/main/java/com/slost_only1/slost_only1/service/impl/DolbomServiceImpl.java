@@ -197,6 +197,15 @@ public class DolbomServiceImpl implements DolbomService {
         dolbomRepository.save(dolbom);
     }
 
+    @Override
+    public void finishDolbom(Long dolbomId) {
+        Dolbom dolbom = dolbomRepository.findById(dolbomId).orElseThrow();
+
+        dolbom.setStatus(DolbomStatus.DONE);
+
+        dolbomRepository.save(dolbom);
+    }
+
     private List<DolbomRes> fetchDolbomDetails(List<Dolbom> dolboms) {
         List<Long> dolbomIds = dolboms.stream().map(Dolbom::getId).toList();
         Map<Long, List<DolbomDow>> dows = dolbomDowRepository.findByDolbom_IdIn(dolbomIds).stream()

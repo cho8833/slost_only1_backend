@@ -21,4 +21,6 @@ public interface DolbomService {
     void apply(Long dolbomId);
 
     void match(Long dolbomId, Long teacherProfileId);
+
+    void finishDolbom(Long dolbomId);
 }

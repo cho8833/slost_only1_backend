@@ -12,7 +12,7 @@ public interface AuthService {
 
     AuthorizationTokenData testSignIn(MemberRole role);
 
-    AuthorizationTokenData signUpWithKakao(String phoeNumber, KakaoOAuthToken token, MemberRole role);
-
     AuthorizationTokenData reissue(TokenReq req);
+
+    AuthorizationTokenData signInWithApple(MemberRole role, AppleAuthorizationCredential appleAuthorizationCredential);
 }
