@@ -38,6 +38,9 @@ public class Member extends BaseEntity {
     @Column
     private String email;
 
+    @Column
+    private String fcmToken;
+
 
     public static String getSendbirdId(MemberRole role, Long id) {
         return role.getName() + id.toString();

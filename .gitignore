@@ -38,3 +38,7 @@ out/
 
 ### yaml(env) ###
 *.yaml
+
+
+# firebase
+/src/main/resources/slostonly1-e9166-firebase-adminsdk-fbsvc-1a88e3050d.json

@@ -5,4 +5,6 @@ import com.slost_only1.slost_only1.model.Member;
 public interface MemberService {
 
     Member me();
+
+    void updateFCMToken(String token);
 }

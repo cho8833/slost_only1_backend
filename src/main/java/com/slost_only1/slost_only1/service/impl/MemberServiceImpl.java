@@ -19,4 +19,13 @@ public class MemberServiceImpl implements MemberService {
     public Member me() {
         return memberRepository.findById(authUtil.getLoginMemberId()).orElseThrow();
     }
+
+    @Override
+    public void updateFCMToken(String token) {
+        Member member = memberRepository.findById(authUtil.getLoginMemberId()).orElseThrow();
+
+        member.setFcmToken(token);
+
+        memberRepository.save(member);
+    }
 }

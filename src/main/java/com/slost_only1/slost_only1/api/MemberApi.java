@@ -2,6 +2,7 @@ package com.slost_only1.slost_only1.api;
 
 import com.slost_only1.slost_only1.config.response.Response;
 import com.slost_only1.slost_only1.data.MemberRes;
+import com.slost_only1.slost_only1.data.req.PostFCMTokenReq;
 import com.slost_only1.slost_only1.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,5 +17,11 @@ public class MemberApi {
     @GetMapping("/me")
     public Response<MemberRes> me() {
         return new Response<>(MemberRes.of(memberService.me()));
+    }
+
+    @PostMapping("/fcm-token")
+    public Response<?> postFCMToken(@RequestBody PostFCMTokenReq req) {
+        memberService.updateFCMToken(req.token());
+        return Response.SUCCESS;
     }
 }
