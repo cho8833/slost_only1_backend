@@ -14,6 +14,7 @@ import com.slost_only1.slost_only1.model.OAuth;
 import com.slost_only1.slost_only1.model.TeacherProfile;
 import com.slost_only1.slost_only1.repository.*;
 import com.slost_only1.slost_only1.service.AuthService;
+import com.slost_only1.slost_only1.util.AuthUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class AuthServiceImpl implements AuthService {
     private final OAuthRepository oAuthRepository;
     private final ChatServiceSendbird chatService;
     private final TeacherProfileRepository teacherProfileRepository;
+    private final AuthUtil authUtil;
 
     @Override
     public AuthorizationTokenData signInWithKakao(MemberRole role, KakaoOAuthToken token) {
@@ -134,6 +136,14 @@ public class AuthServiceImpl implements AuthService {
 
             return tokenProvider.generateAuthorizationTokenData(member);
         }
+    }
+
+    @Override
+    @Transactional
+    public void withdrawal() {
+        Long memberId = authUtil.getLoginMemberId();
+        oAuthRepository.deleteByMember_Id(memberId);
+        memberRepository.deleteById(memberId);
     }
 
     private AuthorizationTokenData onSignInSuccess(MemberRole role, OAuth oAuth) {

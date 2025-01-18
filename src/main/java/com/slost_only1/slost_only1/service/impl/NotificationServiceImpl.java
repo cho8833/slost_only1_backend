@@ -23,13 +23,6 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void sendMessage(Member to, String title, String body) throws FirebaseMessagingException {
 
-        NotificationLog log = NotificationLog.builder()
-                .to(to)
-                .title(title)
-                .body(body)
-                .sentAt(LocalDateTime.now())
-                .build();
-        notificationLogRepository.save(log);
 
         String message = FirebaseMessaging.getInstance().send(Message.builder()
                 .setNotification(Notification.builder()
@@ -38,6 +31,14 @@ public class NotificationServiceImpl implements NotificationService {
                         .build())
                 .setToken(to.getFcmToken())  // 대상 디바이스의 등록 토큰
                 .build());
+
+        NotificationLog log = NotificationLog.builder()
+                .to(to)
+                .title(title)
+                .body(body)
+                .sentAt(LocalDateTime.now())
+                .build();
+        notificationLogRepository.save(log);
 
     }
 }

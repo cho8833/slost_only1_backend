@@ -53,4 +53,10 @@ public class AuthApi {
     public Response<AuthorizationTokenData> token(@RequestBody TokenReq req) {
         return new Response<>(authService.reissue(req));
     }
+
+    @PostMapping("/withdrawal")
+    public Response<?> withdrawal() {
+        authService.withdrawal();
+        return Response.SUCCESS;
+    }
 }

@@ -19,8 +19,13 @@ public class NoticeApi {
         return new Response<>(new NoticeRes("https://yellow-beginner-483.notion.site/13ffda3971138090b9d3d77b29af09d8?pvs=4"));
     }
 
-    @GetMapping("/policy")
+    @GetMapping("/terms")
     public Response<NoticeRes> getPolicyUrl() {
+        return new Response<>(new NoticeRes("https://yellow-beginner-483.notion.site/154fda39711380ae9354c0d81312c2bd?pvs=4"));
+    }
+
+    @GetMapping("/privacy")
+    public Response<NoticeRes> getPrivacyUrl() {
         return new Response<>(new NoticeRes("https://yellow-beginner-483.notion.site/13ffda39711380728923fd11310af8c9?pvs=4"));
     }
 

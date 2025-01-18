@@ -49,6 +49,7 @@ public class SecurityConfig {
                             .requestMatchers("/auth/sign-in/**").permitAll()
                             .requestMatchers("/auth/sign-up").permitAll()
                             .requestMatchers("/dolbom").permitAll()
+                            .requestMatchers("/notice/**").permitAll()
                             .anyRequest().authenticated();
                 })
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

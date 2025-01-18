@@ -15,4 +15,6 @@ public interface AuthService {
     AuthorizationTokenData reissue(TokenReq req);
 
     AuthorizationTokenData signInWithApple(MemberRole role, AppleAuthorizationCredential appleAuthorizationCredential);
+
+    void withdrawal();
 }
